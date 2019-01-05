@@ -1,12 +1,25 @@
 import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
-import searchReducer from './search-reducer.js';
 import axios from 'axios';
-import * as ACTION from './search-actions';
+
+const initialState = {
+    searchURL: '',
+    response: [],
+    filteredResponse: [],
+    isLoading: false,
+    currentBook:{}
+};
+
+const reducer = (state = initialState, action) => {
+    switch(action.type) {
+        default:
+            return state;
+    };
+};
 
 const store = createStore(
-    searchReducer, 
+    reducer, 
     applyMiddleware(
         thunkMiddleware.withExtraArgument({axios}),
         loggingMiddleware
