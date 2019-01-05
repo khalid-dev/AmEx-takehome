@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter, Route, Switch} from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { SearchBar } from './components';
 
 /**
  * COMPONENT
@@ -14,6 +14,7 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         {/* <Route path="/xyz" component={something} /> */}
         {/* Displays our something component as a fallback */}
+        <Route path='/searchbar' component={SearchBar} />
         <Route component={() => <h1> Hi!!!! </h1>} />
       </Switch>
     );
