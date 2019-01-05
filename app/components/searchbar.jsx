@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Dropdown, DropdownButton, Form, InputGroup, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { queryAPI } from '../store/index.js';
-import searchPrefixes from './search-prefixes.js';
+import searchPrefixes from './constants/search-prefixes.js';
 
 class SearchBar extends Component {
     constructor(props) {
