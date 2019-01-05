@@ -24,7 +24,6 @@ export const queryAPI = (queryPrefix, queryBody) => {
     return async dispatch => {
         const formattedQueryBody = queryBody.split(' ').join('+');
         const response = await axios.get(`http://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
-        console.log(response.data.docs.length);
         const results = response.data.docs;
         const action = gotSearchResults(results);
         dispatch(action);
