@@ -37,14 +37,22 @@ const gotSearchResults = (results, searchURL, currentPage) => {
  * Returns a thunk that sends a GET request to Open Library's search.json API.
  * Apppropriately toggles loading while request is open and sets other state fields appropriately.
  */
-export const queryAPI = (queryPrefix, queryBody) => {
+export const queryAPI = (queryPrefix, queryBody, queryURL) => {
     return async dispatch => {
-        const formattedQueryBody = queryBody.split(' ').join('+');
         dispatch(toggleLoading());
-        const response = await axios.get(`http://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
+        let response;
+        let searchURL;
+        if (queryURL) {
+            response = await axios.get(`http://openlibrary.org/search.json${queryURL}`);
+            searchURL = queryURL;
+        }
+        else {
+            const formattedQueryBody = queryBody.split(' ').join('+');
+            response = await axios.get(`http://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
+            searchURL = `?${queryPrefix}=${formattedQueryBody}`;
+        }
         dispatch(toggleLoading());
         const results = response.data.docs;
-        const searchURL = `?${queryPrefix}=${formattedQueryBody}`
         const action = gotSearchResults(results, searchURL, 1);
         dispatch(action);
         history.push(`/results/${searchURL}`);

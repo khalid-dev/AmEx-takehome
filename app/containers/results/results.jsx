@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
 import { BookPreview } from './index.js';
 import ignoredFilters from './ignored-filters.js';
+import { queryAPI } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -47,7 +49,7 @@ export class Results extends Component {
                 };
             });
         });
-        console.log(filters);
+        console.log('FILTERS: ', filters);
         this.setState({filters});
     };
 
@@ -75,6 +77,11 @@ export class Results extends Component {
     };
 
     componentDidMount() {
+        const { history, searchURL, queryAPI } = this.props
+        //if browser URL is different from redux store's searchURL, a thunk is dispatched to get the appropriate results
+        if (history.location.search !== searchURL) {
+            queryAPI(history.location.search)
+        }
         this.generateFilters();
     };
 
@@ -97,14 +104,23 @@ export class Results extends Component {
     };
 };
 
+const mapDispatchToProps = dispatch => {
+    return {
+        queryAPI: (queryURL) => {
+            dispatch(queryAPI(null, null, queryURL));
+        }
+    };
+};
+
 const mapStateToProps = state => {
     return {
         filteredResults: state.filteredResults,
         selectedFilters: state.selectedFilters,
-        currentPage: state.currentPage
+        currentPage: state.currentPage,
+        searchURL: state.searchURL
     };
 };
 
-const ConnectedResults = connect(mapStateToProps, null)(Results);
+const ConnectedResults = connect(mapStateToProps, mapDispatchToProps)(withRouter(Results));
 
 export default ConnectedResults;
