@@ -45,7 +45,7 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
         let response;
         let searchURL;
         if (queryURL) {
-            response = await axios.get(`http://openlibrary.org/search.json${queryURL}`);
+            response = await axios.get(`http://openlibrary.org/search.json${queryURL}&limit=1000`);
             searchURL = queryURL;
         }
         else {

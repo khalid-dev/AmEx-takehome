@@ -3,7 +3,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
-import { BookPreview } from './index.js';
+import { BookPreview, DistinctFilter } from './index.js';
 import { queryAPI } from '../../store/index.js';
 
 export class Results extends Component {
@@ -16,7 +16,20 @@ export class Results extends Component {
     };
 
     renderFilters() {
+        const { filters } = this.props;
+        return (
+            <React.Fragment>
+                {Object.keys(filters).map(key => {
+                    const val = filters[key];
+                    if (val.max) {
 
+                    }
+                    else {
+                        return <DistinctFilter key={key} name={key} options={val}/>
+                    }
+                })}
+            </React.Fragment>
+        );
     };
 
     generatePreviews() {
@@ -26,7 +39,7 @@ export class Results extends Component {
         const endIx = startIx + step;
         const bookPreviews = filteredResults
             .slice(startIx, endIx)
-            .map((book, ix)=> <BookPreview bookInfo={book} bookIx={startIx + ix}/>)
+            .map((book, ix)=> <BookPreview key={ix} bookInfo={book} bookIx={startIx + ix}/>)
         return (
             <React.Fragment>
                 {bookPreviews}
@@ -43,7 +56,7 @@ export class Results extends Component {
         //if browser URL is different from redux store's searchURL, a thunk is dispatched to get the appropriate results
         if (history.location.search !== searchURL) {
             queryAPI(history.location.search);
-        }
+        };
     };
 
     render() {

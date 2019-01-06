@@ -5,7 +5,6 @@ import { withRouter } from "react-router";
 class BookPreview extends Component {
     render () {
         const { bookInfo, bookIx, history } = this.props;
-        console.log(bookInfo);
         const { cover_i, title, author_name, first_publish_year } = bookInfo;
         const coverURL = cover_i ? `http://covers.openlibrary.org/b/id/${cover_i}-M.jpg` : `https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg`;
         return (
