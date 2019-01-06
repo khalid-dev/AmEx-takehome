@@ -19,8 +19,8 @@ export class Results extends Component {
         const { filteredResults } = this.props;
         const filters = {};
         filteredResults.forEach(result => {
-            Object.keys(results).forEach(key => {
-                const val = results[key];
+            Object.keys(result).forEach(key => {
+                const val = result[key];
                 if (!ignoredFilters[key]) {
                     if (Number(val)) {
                         if (filters[key]) {

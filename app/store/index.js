@@ -2,6 +2,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
 import axios from 'axios';
+import history from '../history.js';
 
 const GOT_RESULTS = "GOT_RESULTS";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
@@ -46,6 +47,7 @@ export const queryAPI = (queryPrefix, queryBody) => {
         const searchURL = `?${queryPrefix}=${formattedQueryBody}`
         const action = gotSearchResults(results, searchURL, 1);
         dispatch(action);
+        history.push(`/results/${searchURL}`);
     };
 };
 
