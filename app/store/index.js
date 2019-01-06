@@ -9,6 +9,7 @@ const TOGGLE_LOADING = "TOGGLE_LOADING";
 const initialState = {
     searchURL: '',
     results: [],
+    selectedFilters: {},
     filteredResults: [],
     isLoading: false,
     currentBook:{}
