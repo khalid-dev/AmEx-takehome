@@ -13,10 +13,12 @@ const initialState = {
     currentBook:{}
 };
 
-const gotSearchResults = results => {
+const gotSearchResults = (results, searchURL, currentBook) => {
     return {
         type: GOT_RESULTS,
-        results
+        results,
+        searchURL,
+        currentBook
     };
 };
 
@@ -25,7 +27,8 @@ export const queryAPI = (queryPrefix, queryBody) => {
         const formattedQueryBody = queryBody.split(' ').join('+');
         const response = await axios.get(`http://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
         const results = response.data.docs;
-        const action = gotSearchResults(results);
+        const searchURL = `?${queryPrefix}=${formattedQueryBody}`
+        const action = gotSearchResults(results, searchURL, results[0]);
         dispatch(action);
     };
 };
@@ -33,8 +36,8 @@ export const queryAPI = (queryPrefix, queryBody) => {
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
-            const { results } = action;
-            return { ...state, results , filteredResults: results};
+            const { results, searchURL, currentBook } = action;
+            return { ...state, results , filteredResults: results, searchURL, currentBook};
         default:
             return state;
     };
