@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { queryAPI } from '../store/index.js';
 import { Button } from 'react-bootstrap';
 
-class Suggestion extends Component {
+export class Suggestion extends Component {
     render() {
         const { queryName, queryPrefix, queryBody } = this.props;
         return (
