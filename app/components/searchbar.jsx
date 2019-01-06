@@ -51,7 +51,7 @@ export class SearchBar extends Component {
                             </Dropdown.Item>)
                         )}
                     </DropdownButton>
-                    <Form.Control placeholder="Enter search terms..." name="queryBody" onChange={this.handleBodyChange}></Form.Control>
+                    <Form.Control aria-label="query-text-input" placeholder="Enter search terms..." name="queryBody" onChange={this.handleBodyChange}></Form.Control>
                     <InputGroup.Append>
                         <Button variant="secondary" onClick={this.handleSubmit}>Search</Button>
                     </InputGroup.Append>
