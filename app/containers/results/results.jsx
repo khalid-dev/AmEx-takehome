@@ -3,6 +3,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { SearchBar } from '../../components/index.js';
 import { BookPreview } from './index.js';
+import ignoredFilters from './ignored-filters.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -15,7 +16,39 @@ export class Results extends Component {
     };
 
     generateFilters() {
-
+        const { filteredResults } = this.props;
+        const filters = {};
+        filteredResults.forEach(result => {
+            Object.keys(results).forEach(key => {
+                const val = results[key];
+                if (!ignoredFilters[key]) {
+                    if (Number(val)) {
+                        if (filters[key]) {
+                            if (val < filters[key].min) {
+                                filters[key].min = Number(val);
+                            };
+                            if (val > filters[key].max) {
+                                filters[key].max = Number(val);
+                            };
+                        }
+                        else {
+                            filters[key] = {
+                                min: Number(val),
+                                max: Number(val)
+                            };
+                        };
+                    }
+                    else {
+                        filters[key] = {
+                            type: 'distinct',
+                            isSelected: 'false'
+                        };
+                    };
+                };
+            });
+        });
+        console.log(filters);
+        this.setState({filters});
     };
 
     renderFilters() {
@@ -43,7 +76,7 @@ export class Results extends Component {
 
     componentDidMount() {
         this.generateFilters();
-    }
+    };
 
     render() {
         return (
