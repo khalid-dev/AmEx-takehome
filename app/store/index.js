@@ -3,6 +3,7 @@ import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
 import axios from 'axios';
 import history from '../history.js';
+import { generateFilters } from './utils.js';
 
 const GOT_RESULTS = "GOT_RESULTS";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
@@ -10,7 +11,7 @@ const TOGGLE_LOADING = "TOGGLE_LOADING";
 const initialState = {
     searchURL: '',
     results: [],
-    selectedFilters: {},
+    filters: {},
     filteredResults: [],
     isLoading: false,
     currentPage: 0
@@ -22,12 +23,13 @@ const toggleLoading = () => {
     }
 ;}
 
-const gotSearchResults = (results, searchURL, currentPage) => {
+const gotSearchResults = (results, searchURL, currentPage, filters) => {
     return {
         type: GOT_RESULTS,
         results,
         searchURL,
-        currentPage
+        currentPage,
+        filters
     };
 };
 
@@ -53,7 +55,8 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
         }
         dispatch(toggleLoading());
         const results = response.data.docs;
-        const action = gotSearchResults(results, searchURL, 1);
+        const filters = generateFilters(results);
+        const action = gotSearchResults(results, searchURL, 1, filters);
         dispatch(action);
         history.push(`/results/${searchURL}`);
     };
@@ -62,8 +65,8 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
-            const { results, searchURL, currentPage } = action;
-            return { ...state, results , filteredResults: results, searchURL, currentPage};
+            const { results, searchURL, currentPage, filters } = action;
+            return { ...state, results , filteredResults: results, searchURL, currentPage, filters};
         case TOGGLE_LOADING:
             return { ...state, isLoading: !state.isLoading};
         default:

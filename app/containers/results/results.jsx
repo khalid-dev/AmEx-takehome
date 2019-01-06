@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
 import { BookPreview } from './index.js';
-import ignoredFilters from './ignored-filters.js';
 import { queryAPI } from '../../store/index.js';
 
 export class Results extends Component {
@@ -12,45 +11,8 @@ export class Results extends Component {
         super(props);
         this.state = {
             step: 10,
-            filters: {},
             sortBy: ''
         }
-    };
-
-    generateFilters() {
-        const { filteredResults } = this.props;
-        const filters = {};
-        filteredResults.forEach(result => {
-            Object.keys(result).forEach(key => {
-                const val = result[key];
-                if (!ignoredFilters[key]) {
-                    if (Number(val)) {
-                        if (filters[key]) {
-                            if (val < filters[key].min) {
-                                filters[key].min = Number(val);
-                            };
-                            if (val > filters[key].max) {
-                                filters[key].max = Number(val);
-                            };
-                        }
-                        else {
-                            filters[key] = {
-                                min: Number(val),
-                                max: Number(val)
-                            };
-                        };
-                    }
-                    else {
-                        filters[key] = {
-                            type: 'distinct',
-                            isSelected: 'false'
-                        };
-                    };
-                };
-            });
-        });
-        console.log('FILTERS: ', filters);
-        this.setState({filters});
     };
 
     renderFilters() {
@@ -80,9 +42,8 @@ export class Results extends Component {
         const { history, searchURL, queryAPI } = this.props
         //if browser URL is different from redux store's searchURL, a thunk is dispatched to get the appropriate results
         if (history.location.search !== searchURL) {
-            queryAPI(history.location.search)
+            queryAPI(history.location.search);
         }
-        this.generateFilters();
     };
 
     render() {
@@ -115,9 +76,9 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
     return {
         filteredResults: state.filteredResults,
-        selectedFilters: state.selectedFilters,
+        filters: state.filters,
         currentPage: state.currentPage,
-        searchURL: state.searchURL
+        searchURL: state.searchURL,
     };
 };
 
