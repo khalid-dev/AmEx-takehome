@@ -9,7 +9,7 @@
     "build-watch": "webpack -w",
     "build": "webpack",
     "start": "echo 'Running server for production - developers, use npm run start:dev for development' && node main",
-    "test": ""
+    "test:client": "mocha ./app/tests --require babel-core/register --require babel-polyfill --require ./app/tests/setup.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,16 +20,18 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
+    "chai": "^4.2.0",
     "css-loader": "^1.0.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "mocha": "^5.2.0",
     "redux-devtools-extension": "^2.13.7",
     "redux-logger": "^3.0.6",
+    "sinon": "^7.2.2",
     "style-loader": "^0.23.1",
+    "volleyball": "^1.5.1",
     "webpack": "^4.23.0",
-    "webpack-cli": "^3.1.2",
-    "volleyball": "^1.5.1"
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "@babel/core": "^7.2.0",

@@ -29,6 +29,12 @@ const gotSearchResults = (results, searchURL, currentBook) => {
     };
 };
 
+/**
+ * @param {*} queryPrefix 
+ * @param {*} queryBody 
+ * Returns a thunk that sends a GET request to Open Library's search.json API.
+ * Apppropriately toggles loading while request is open and sets other state fields appropriately.
+ */
 export const queryAPI = (queryPrefix, queryBody) => {
     return async dispatch => {
         const formattedQueryBody = queryBody.split(' ').join('+');
