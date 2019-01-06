@@ -12,7 +12,7 @@ const initialState = {
     selectedFilters: {},
     filteredResults: [],
     isLoading: false,
-    currentBook:{}
+    currentPage: 0
 };
 
 const toggleLoading = () => {
@@ -21,12 +21,12 @@ const toggleLoading = () => {
     }
 ;}
 
-const gotSearchResults = (results, searchURL, currentBook) => {
+const gotSearchResults = (results, searchURL, currentPage) => {
     return {
         type: GOT_RESULTS,
         results,
         searchURL,
-        currentBook
+        currentPage
     };
 };
 
@@ -44,7 +44,7 @@ export const queryAPI = (queryPrefix, queryBody) => {
         dispatch(toggleLoading());
         const results = response.data.docs;
         const searchURL = `?${queryPrefix}=${formattedQueryBody}`
-        const action = gotSearchResults(results, searchURL, results[0]);
+        const action = gotSearchResults(results, searchURL, 1);
         dispatch(action);
     };
 };
@@ -52,8 +52,8 @@ export const queryAPI = (queryPrefix, queryBody) => {
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
-            const { results, searchURL, currentBook } = action;
-            return { ...state, results , filteredResults: results, searchURL, currentBook};
+            const { results, searchURL, currentPage } = action;
+            return { ...state, results , filteredResults: results, searchURL, currentPage};
         case TOGGLE_LOADING:
             return { ...state, isLoading: !state.isLoading};
         default:
