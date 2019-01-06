@@ -9,9 +9,8 @@ export class Results extends Component {
         this.state = {
             step: 10,
             filters: {},
-            selectedFilters: {},
             sortBy: ''
-        };
+        }
     };
 
     generateFilters() {
@@ -27,7 +26,7 @@ export class Results extends Component {
     };
 
     setFilter(filterCategory, filerName, value) {
-        
+
     };
 
     componentDidMount() {
@@ -55,8 +54,11 @@ export class Results extends Component {
 
 const mapStateToProps = state => {
     return {
-        campuses: state.campuses
+        filteredResults: state.filteredResults,
+        selectedFilters: state.selectedFilters
     };
 };
 
-export default 
+const ConnectedResults = connect(mapStateToProps, null)(Results);
+
+export default ConnectedResults;
