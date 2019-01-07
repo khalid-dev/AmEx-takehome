@@ -6,7 +6,7 @@ const filterFiller = (filters, key, val) => {
         if (filters[key]) {
             if (val < filters[key].min) {
                 filters[key].min = numericalVal;
-                filters[key].selectedNumber = numericalVal;
+                filters[key].selectedVal = numericalVal;
             };
             if (val > filters[key].max) {
                 filters[key].max = numericalVal;
@@ -16,7 +16,7 @@ const filterFiller = (filters, key, val) => {
             filters[key] = {
                 min: numericalVal,
                 max: numericalVal,
-                selectedNumber: numericalVal
+                selectedVal: numericalVal
             };
         };
     }
