@@ -1,8 +1,8 @@
 const sortOptions = {
-    'Author (A-Z)': ['author_name', 'asc'],
-    'Author (Z-A)': ['author_name', 'dec'],
-    'Title (A-Z)': ['title', 'asc'],
-    'Title (Z-A)': ['title', 'dec'],
+    'Author (A-Z)': ['author_name', 'dec'],
+    'Author (Z-A)': ['author_name', 'asc'],
+    'Title (A-Z)': ['title', 'dec'],
+    'Title (Z-A)': ['title', 'asc'],
     'Publish Date (Newer First)': ['first_publish_year', 'asc'],
     'Publish Date (Older First)': ['first_publish_year', 'dec']
 };

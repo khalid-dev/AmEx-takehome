@@ -102,8 +102,8 @@ const authorComparator = (bookA, bookB) => {
     if (bookA['author_name'] === undefined) {
         console.log(bookA)
     }
-    const authorA = bookA['author_name'][0];
-    const authorB = bookB['author_name'][0];
+    const authorA = bookA['author_name'][0].toUpperCase();
+    const authorB = bookB['author_name'][0].toUpperCase();
     if (authorA > authorB)
         return -1;
     if (authorA < authorB)
@@ -136,10 +136,11 @@ const publishDateComparator = (bookA, bookB) => {
 
 export const sort = (results, sortBy) => {
     console.log(sortBy);
-    const sortedResults = results.sort((bookA, bookB) => {
+    const resultsCopy = results.slice();
+    const sortedResults = resultsCopy.sort((bookA, bookB) => {
         const [ attribute, order ] = sortBy;
         //orderMultiplier is used to potentially invert comparators' return values 
-        let orderMultiplier = (order === 'asc' ? -1 : 1);
+        let orderMultiplier = (order === 'asc' ? 1 : -1);
 
         if (bookA[attribute] && !bookB[attribute])
             return -1;
