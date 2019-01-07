@@ -3,10 +3,11 @@ import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
 import axios from 'axios';
 import history from '../history.js';
-import { generateFilters } from './utils.js';
+import { generateFilters, setSingleFilter } from './utils.js';
 
 const GOT_RESULTS = "GOT_RESULTS";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
+const FILTER_SET = "FILTER_SET";
 
 const initialState = {
     searchURL: '',
@@ -30,6 +31,15 @@ const gotSearchResults = (results, searchURL, currentPage, filters) => {
         searchURL,
         currentPage,
         filters
+    };
+};
+
+const filterSet = (filterCategory, filterName, value) => {
+    return {
+        type: FILTER_SET,
+        filterCategory,
+        filterName,
+        value
     };
 };
 
@@ -62,6 +72,12 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
     };
 };
 
+export const setFilter = (filterCategory, filterName, value) => {
+    return dispatch => {
+        dispatch(filterSet(filterCategory, filterName, value));
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
@@ -69,6 +85,9 @@ const reducer = (state = initialState, action) => {
             return { ...state, results , filteredResults: results, searchURL, currentPage, filters};
         case TOGGLE_LOADING:
             return { ...state, isLoading: !state.isLoading};
+        case FILTER_SET:
+            const { filterCategory, filterName, value } = action;
+            return { ...state, filters: setSingleFilter(state.filters, filterCategory, filterName, value)}
         default:
             return state;
     };

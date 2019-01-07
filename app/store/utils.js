@@ -32,6 +32,7 @@ const filterFiller = (filters, key, val) => {
 
 const generateFilter = (filters, key, val) => {
     if (allowedFilters[key]) {
+        //if val is an array
         if (val.length) {
             val.forEach(val => {
                 filterFiller(filters, key, val);
@@ -52,5 +53,17 @@ export const generateFilters = (results) => {
         });
     });
     console.log('FILTERS: ', filters);
+    return filters;
+};
+
+export const setSingleFilter = (filters, filterCategory, filterName, value) => {
+    const category = filters[filterCategory];
+    //if category is a range
+    if (category.max) {
+
+    }
+    else {
+        category[filterName] = value;
+    };
     return filters;
 };

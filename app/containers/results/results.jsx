@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
 import { BookPreview, DistinctFilter, RangeFilter } from './index.js';
-import { queryAPI } from '../../store/index.js';
+import { queryAPI, setFilter } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ export class Results extends Component {
                         return <RangeFilter key={key} name={key} min={min} max={max} selectedVal={selectedVal}/>
                     }
                     else {
-                        return <DistinctFilter key={key} name={key} options={val}/>
+                        return <DistinctFilter key={key} name={key} options={val} handleClick={this.props.setFilter}/>
                     }
                 })}
             </React.Fragment>
@@ -48,10 +48,6 @@ export class Results extends Component {
         )
     };
 
-    setFilter(filterCategory, filerName, value) {
-
-    };
-
     componentDidMount() {
         const { history, searchURL, queryAPI } = this.props
         //if browser URL is different from redux store's searchURL, a thunk is dispatched to get the appropriate results
@@ -68,6 +64,7 @@ export class Results extends Component {
                     <Col>
                         {/* <SortBy /> */}
                         {this.renderFilters()}
+
                     </Col>
                     <Col>
                         {this.generatePreviews()}
@@ -83,6 +80,9 @@ const mapDispatchToProps = dispatch => {
     return {
         queryAPI: (queryURL) => {
             dispatch(queryAPI(null, null, queryURL));
+        },
+        setFilter: (filterCategory, filterName, value) => {
+            dispatch(setFilter(filterCategory, filterName, value));
         }
     };
 };
