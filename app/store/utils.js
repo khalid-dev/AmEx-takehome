@@ -73,6 +73,7 @@ export const setSingleFilter = (filters, filterCategory, filterName, value) => {
 };
 
 //Applies all specified filters to specified results
+//TODO: refactor so it's easier to unit test
 export const applyAllFilters = (results, filters) => {
     return results.filter(result => {
         let resultPassesFilter = false;

@@ -20,8 +20,8 @@ export class Results extends Component {
     };
 
     applyFilters() {
-        const { applyFilters, filteredResults, filters } = this.props;
-        applyFilters(filteredResults, filters);
+        const { applyFilters, results, filters } = this.props;
+        applyFilters(results, filters);
     };
 
     renderFilters() {
@@ -102,6 +102,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
+        results: state.results,
         filteredResults: state.filteredResults,
         filters: state.filters,
         currentPage: state.currentPage,

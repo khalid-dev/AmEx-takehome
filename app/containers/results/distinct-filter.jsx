@@ -8,7 +8,7 @@ const DistinctFilter = ({ name, options, setFilter, applyFilters }) => {
                 return (
                     <Dropdown.Item 
                     key={key} 
-                    disabled={options[key]} 
+                    active={options[key]} 
                     onClick={() => {
                         setFilter(name, key, !options[key]);
                         applyFilters();
