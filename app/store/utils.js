@@ -67,3 +67,32 @@ export const setSingleFilter = (filters, filterCategory, filterName, value) => {
     };
     return filters;
 };
+
+export const applyAllFilters = (results, filters) => {
+    return results.filter(result => {
+        let resultPassesFilter = false;
+        Object.keys(filters).forEach(filterName => {
+            if (result[filterName]) {
+                const filter = filters[filterName];
+                //if filter is a range
+                if (filter.max) {
+
+                }
+                else {
+                    //if result.filterName is an array
+                    if (result[filterName].length) {
+                        result[filterName].forEach(entry => {
+                            if (filter[entry] === true) {
+                                resultPassesFilter = true;
+                            };
+                        });
+                    }
+                    else {
+                        
+                    };
+                };
+            };  
+        });
+        return resultPassesFilter;
+    });
+};

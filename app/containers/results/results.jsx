@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
 import { BookPreview, DistinctFilter, RangeFilter } from './index.js';
-import { queryAPI, setFilter } from '../../store/index.js';
+import { queryAPI, setFilter, applyFilters } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -12,7 +12,13 @@ export class Results extends Component {
         this.state = {
             step: 10,
             sortBy: ''
-        }
+        };
+        this.applyFilters = this.applyFilters.bind(this);
+    };
+
+    applyFilters() {
+        const { applyFilters, filteredResults, filters } = this.props;
+        applyFilters(filteredResults, filters);
     };
 
     renderFilters() {
@@ -26,7 +32,7 @@ export class Results extends Component {
                         return <RangeFilter key={key} name={key} min={min} max={max} selectedVal={selectedVal}/>
                     }
                     else {
-                        return <DistinctFilter key={key} name={key} options={val} handleClick={this.props.setFilter}/>
+                        return <DistinctFilter key={key} name={key} options={val} setFilter={this.props.setFilter} applyFilters={this.applyFilters}/>
                     }
                 })}
             </React.Fragment>
@@ -83,6 +89,9 @@ const mapDispatchToProps = dispatch => {
         },
         setFilter: (filterCategory, filterName, value) => {
             dispatch(setFilter(filterCategory, filterName, value));
+        },
+        applyFilters: (results, filters) => {
+            dispatch(applyFilters(results, filters));
         }
     };
 };

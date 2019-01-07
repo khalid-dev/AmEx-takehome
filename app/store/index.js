@@ -3,11 +3,12 @@ import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
 import axios from 'axios';
 import history from '../history.js';
-import { generateFilters, setSingleFilter } from './utils.js';
+import { generateFilters, setSingleFilter, applyAllFilters } from './utils.js';
 
 const GOT_RESULTS = "GOT_RESULTS";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
 const FILTER_SET = "FILTER_SET";
+const APPLIED_FILTERS = "APPLIED_FILTERS";
 
 const initialState = {
     searchURL: '',
@@ -43,6 +44,13 @@ const filterSet = (filterCategory, filterName, value) => {
     };
 };
 
+const appliedFilters = (filteredResults) => {
+    return {
+        type: APPLIED_FILTERS,
+        filteredResults
+    };
+};
+
 /**
  * @param {*} queryPrefix 
  * @param {*} queryBody 
@@ -75,6 +83,17 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
 export const setFilter = (filterCategory, filterName, value) => {
     return dispatch => {
         dispatch(filterSet(filterCategory, filterName, value));
+        const filteredResults = applyFilters();
+        dispatch(appliedFilters(filteredResults));
+    };
+};
+
+export const applyFilters = (results, filters) => {
+    return dispatch => {
+        dispatch(toggleLoading());
+        const filteredResults = applyAllFilters(results, filters);
+        dispatch(toggleLoading());
+        dispatch(appliedFilters(filteredResults));
     };
 };
 
@@ -87,7 +106,11 @@ const reducer = (state = initialState, action) => {
             return { ...state, isLoading: !state.isLoading};
         case FILTER_SET:
             const { filterCategory, filterName, value } = action;
-            return { ...state, filters: setSingleFilter(state.filters, filterCategory, filterName, value)}
+            const newFilters = setSingleFilter(state.filters, filterCategory, filterName, value)
+            return { ...state, filters: newFilters};
+        case APPLIED_FILTERS: 
+            const { filteredResults } = action;
+            return { ...state, filteredResults};
         default:
             return state;
     };

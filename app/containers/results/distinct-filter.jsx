@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
-const DistinctFilter = ({ name, options, handleClick }) => {
+const DistinctFilter = ({ name, options, setFilter, applyFilters }) => {
     return (
         <DropdownButton title={name}>
             {Object.keys(options).map(key => {
@@ -10,7 +10,8 @@ const DistinctFilter = ({ name, options, handleClick }) => {
                     key={key} 
                     disabled={options[key]} 
                     onClick={() => {
-                        handleClick(name, key, !options[key])
+                        setFilter(name, key, !options[key]);
+                        applyFilters();
                     }}>
                         {key}
                     </Dropdown.Item>
