@@ -1,15 +1,17 @@
 import allowedFilters from './allowed-filters.js';
 
+//Fills a single filter of filters appropriately with specified value
 const filterFiller = (filters, key, val) => {
     if (!isNaN(val)) {
         const numericalVal = Number(val);
-        if (filters[key]) {
-            if (val < filters[key].min) {
-                filters[key].min = numericalVal;
-                filters[key].selectedVal = numericalVal;
+        const filter = filters[key];
+        if (filter) {
+            if (val < filter.min) {
+                filter.min = numericalVal;
+                filter.selectedVal = numericalVal;
             };
-            if (val > filters[key].max) {
-                filters[key].max = numericalVal;
+            if (val > filter.max) {
+                filter.max = numericalVal;
             };
         }
         else {
@@ -30,6 +32,7 @@ const filterFiller = (filters, key, val) => {
     };
 };
 
+//Generates a single filter to be filled
 const generateFilter = (filters, key, val) => {
     if (allowedFilters[key]) {
         //if val is an array
@@ -44,6 +47,7 @@ const generateFilter = (filters, key, val) => {
     };
 };
 
+//Generates all filters for the specified array of results
 export const generateFilters = (results) => {
     const filters = {};
     results.forEach(result => {
@@ -52,10 +56,10 @@ export const generateFilters = (results) => {
             generateFilter(filters, key, val);
         });
     });
-    console.log('FILTERS: ', filters);
     return filters;
 };
 
+//Sets a single filter in filters with the specified value
 export const setSingleFilter = (filters, filterCategory, filterName, value) => {
     const category = filters[filterCategory];
     //if category is a range
@@ -68,6 +72,7 @@ export const setSingleFilter = (filters, filterCategory, filterName, value) => {
     return filters;
 };
 
+//Applies all specified filters to specified results
 export const applyAllFilters = (results, filters) => {
     return results.filter(result => {
         let resultPassesFilter = false;
@@ -88,7 +93,7 @@ export const applyAllFilters = (results, filters) => {
                         });
                     }
                     else {
-                        
+
                     };
                 };
             };  

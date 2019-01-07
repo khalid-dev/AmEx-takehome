@@ -13,6 +13,9 @@ export class Results extends Component {
             step: 10,
             sortBy: ''
         };
+        /**
+         * This is bound so that when the DistinctFilter component is clicked,
+         * applyFilters can be called without the Distinct Filter component being connected to the redux store.*/
         this.applyFilters = this.applyFilters.bind(this);
     };
 
@@ -44,6 +47,7 @@ export class Results extends Component {
         const { step } = this.state;
         const startIx = (currentPage - 1) * step;
         const endIx = startIx + step;
+        //Generates BookPreview components for the current page the user is viewing
         const bookPreviews = filteredResults
             .slice(startIx, endIx)
             .map((book, ix)=> <BookPreview key={ix} bookInfo={book} bookIx={startIx + ix}/>)

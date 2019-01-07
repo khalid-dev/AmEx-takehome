@@ -52,8 +52,7 @@ const appliedFilters = (filteredResults) => {
 };
 
 /**
- * @param {*} queryPrefix 
- * @param {*} queryBody 
+ * PARAMS: queryPrefix, queryBody, queryURL (optional)
  * Returns a thunk that sends a GET request to Open Library's search.json API.
  * Apppropriately toggles loading while request is open and sets other state fields appropriately.
  */
@@ -92,8 +91,8 @@ export const applyFilters = (results, filters) => {
     return dispatch => {
         dispatch(toggleLoading());
         const filteredResults = applyAllFilters(results, filters);
-        dispatch(toggleLoading());
         dispatch(appliedFilters(filteredResults));
+        dispatch(toggleLoading());
     };
 };
 
