@@ -85,19 +85,14 @@ export const applyAllFilters = (results, filters) => {
 
                 }
                 else {
-                    //if result.filterName is an array
-                    if (result[filterName].length) {
+                    //result.filterName is always an array at this point due to generateFilters
                         result[filterName].forEach(entry => {
                             if (filter[entry] === true) {
                                 resultPassesFilter = true;
                             };
                         });
                     }
-                    else {
-
-                    };
                 };
-            };  
         });
         return resultPassesFilter;
     });
