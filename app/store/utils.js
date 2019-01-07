@@ -99,9 +99,6 @@ export const applyAllFilters = (results, filters) => {
 };
 
 const authorComparator = (bookA, bookB) => {
-    if (bookA['author_name'] === undefined) {
-        console.log(bookA)
-    }
     const authorA = bookA['author_name'][0].toUpperCase();
     const authorB = bookB['author_name'][0].toUpperCase();
     if (authorA > authorB)
