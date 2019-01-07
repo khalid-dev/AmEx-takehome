@@ -97,3 +97,72 @@ export const applyAllFilters = (results, filters) => {
         return resultPassesFilter;
     });
 };
+
+const authorComparator = (bookA, bookB) => {
+    if (bookA['author_name'] === undefined) {
+        console.log(bookA)
+    }
+    const authorA = bookA['author_name'][0];
+    const authorB = bookB['author_name'][0];
+    if (authorA > authorB)
+        return -1;
+    if (authorA < authorB)
+        return 1;
+    else
+        return 0;
+};
+
+const titleComparator = (bookA, bookB) => {
+    const titleA = bookA['title'];
+    const titleB = bookB['title'];
+    if (titleA > titleB)
+        return -1;
+    if (titleA < titleB)
+        return 1;
+    else
+        return 0;
+};
+
+const publishDateComparator = (bookA, bookB) => {
+    const publishDateA = Number(bookA['first_publish_year']);
+    const publishDateB = Number(bookB['first_publish_year']);
+    if (publishDateA > publishDateB)
+        return -1;
+    if (publishDateA < publishDateB)
+        return 1;
+    else
+        return 0;
+};
+
+export const sort = (results, sortBy) => {
+    console.log(sortBy);
+    const sortedResults = results.sort((bookA, bookB) => {
+        const [ attribute, order ] = sortBy;
+        //orderMultiplier is used to potentially invert comparators' return values 
+        let orderMultiplier = (order === 'asc' ? -1 : 1);
+
+        if (bookA[attribute] && !bookB[attribute])
+            return -1;
+        if (!bookA[attribute] && bookB[attribute])
+            return 1;
+        if (!bookA[attribute] && !bookB[attribute])
+            return 0;
+        else {
+            let comparatorVal = 0;
+            switch(attribute) {
+                case 'author_name':
+                    comparatorVal = authorComparator(bookA, bookB);
+                    break;
+                case 'title':
+                    comparatorVal = titleComparator(bookA, bookB);
+                    break;
+                case 'first_publish_year':
+                    comparatorVal = publishDateComparator(bookA, bookB);
+                default:
+                    break;
+            };
+            return comparatorVal * orderMultiplier;
+        };
+    });
+    return sortedResults;
+};

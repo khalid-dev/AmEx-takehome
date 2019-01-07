@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
 import { BookPreview, DistinctFilter, RangeFilter, SortBy } from './index.js';
-import { queryAPI, setFilter, applyFilters } from '../../store/index.js';
+import { queryAPI, setFilter, applyFilters, sortResults } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -17,11 +17,18 @@ export class Results extends Component {
          * This is bound so that when the DistinctFilter component is clicked,
          * applyFilters can be called without the Distinct Filter component being connected to the redux store.*/
         this.applyFilters = this.applyFilters.bind(this);
+        //Same as above for SortBy component
+        this.sortResults = this.sortResults.bind(this);
     };
 
     applyFilters() {
         const { applyFilters, results, filters } = this.props;
         applyFilters(results, filters);
+    };
+
+    sortResults(sortBy) {
+        const { filteredResults, sortResults } = this.props;
+        sortResults(filteredResults, sortBy);
     };
 
     renderFilters() {
@@ -89,7 +96,7 @@ export class Results extends Component {
                         {this.renderFilters()}
                     </Col>
                     <Col>
-                        <SortBy />
+                        <SortBy sortResults={this.sortResults}/>
                         {this.generatePreviews()}
                     </Col>
                 </Row>
@@ -109,6 +116,9 @@ const mapDispatchToProps = dispatch => {
         },
         applyFilters: (results, filters) => {
             dispatch(applyFilters(results, filters));
+        },
+        sortResults: (results, sortBy) => {
+            dispatch(sortResults(results, sortBy));
         }
     };
 };

@@ -3,12 +3,13 @@ import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
 import axios from 'axios';
 import history from '../history.js';
-import { generateFilters, setSingleFilter, applyAllFilters } from './utils.js';
+import { generateFilters, setSingleFilter, applyAllFilters, sort } from './utils.js';
 
 const GOT_RESULTS = "GOT_RESULTS";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
 const FILTER_SET = "FILTER_SET";
 const APPLIED_FILTERS = "APPLIED_FILTERS";
+const RESULTS_SORTED = "RESULTS_SORTED";
 
 const initialState = {
     searchURL: '',
@@ -48,6 +49,13 @@ const appliedFilters = (filteredResults) => {
     return {
         type: APPLIED_FILTERS,
         filteredResults
+    };
+};
+
+const resultsSorted = (sortedResults) => {
+    return {
+        type: RESULTS_SORTED,
+        sortedResults
     };
 };
 
@@ -96,6 +104,15 @@ export const applyFilters = (results, filters) => {
     };
 };
 
+export const sortResults = (results, sortBy) => {
+    return dispatch => {
+        dispatch(toggleLoading());
+        const sortedResults = sort(results, sortBy);
+        dispatch(resultsSorted(sortedResults));
+        dispatch(toggleLoading());
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
@@ -110,6 +127,9 @@ const reducer = (state = initialState, action) => {
         case APPLIED_FILTERS: 
             const { filteredResults } = action;
             return { ...state, filteredResults};
+        case RESULTS_SORTED:
+            const { sortedResults } = action;
+            return { ...state, filteredResults: sortedResults };
         default:
             return state;
     };

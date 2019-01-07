@@ -10,15 +10,17 @@ export default class SortBy extends Component {
         };
     };
     render() {
+        const { sortedBy } = this.state;
         return (
-            <DropdownButton title={`Sort by: ${this.state.sortedBy}`}>
+            <DropdownButton title={`Sort by: ${sortedBy}`}>
                 {Object.keys(sortOptions).map(key => {
                     return (
                         <Dropdown.Item 
                         key={key} 
-                        active={this.state.sortedBy === key}
+                        active={sortedBy === key}
                         onClick={() => {
-                            this.setState({sortedBy: key})
+                            this.setState({sortedBy: key});
+                            this.props.sortResults(sortOptions[key]);
                         }}>
                             {key}
                         </Dropdown.Item>
