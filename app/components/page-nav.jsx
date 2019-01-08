@@ -11,6 +11,18 @@ const PageNav = ({ length, step, currentPage, searchURL, setPage }) => {
         };
         const totalPages = Math.ceil(length / step);
         const navLinks = [];
+        if (currentPage > 1) {
+            const prevPageIx = Number(currentPage) - 1;
+            navLinks.push(
+                <NavLink
+                key="prev"
+                to={`/results/${searchURL}/page=${prevPageIx}`} 
+                activeClassName="selected"
+                onClick={() => setPage(prevPageIx)}>
+                Previous
+                </NavLink>
+            );
+        };
         for (let i = startPage; i < startPage + 10 && i <= totalPages; i++) {
             navLinks.push(
                 <NavLink 
@@ -22,6 +34,18 @@ const PageNav = ({ length, step, currentPage, searchURL, setPage }) => {
                 </NavLink>
             );
         };
+        if (currentPage < totalPages) {
+            const nextPageIx = Number(currentPage) + 1;
+            navLinks.push(
+                <NavLink
+                key="next"
+                to={`/results/${searchURL}/page=${nextPageIx}`} 
+                activeClassName="selected"
+                onClick={() => setPage(nextPageIx)}>
+                Next
+                </NavLink>
+            );
+        }
         return navLinks;
     };
     
