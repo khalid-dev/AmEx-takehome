@@ -73,7 +73,7 @@ const allFiltersToggled = (toggledFilters, filteredResults) => {
  * Returns a thunk that sends a GET request to Open Library's search.json API.
  * Apppropriately toggles loading while request is open and sets other state fields appropriately.
  */
-export const queryAPI = (queryPrefix, queryBody, queryURL) => {
+export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
     return async dispatch => {
         dispatch(toggleLoading());
         let response;
@@ -89,10 +89,11 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
         }
         const results = response.data.docs;
         const filters = generateFilters(results);
-        const action = gotSearchResults(results, searchURL, 1, filters);
+        const pageNum = pageURL.charAt(pageURL.length - 1);
+        const action = gotSearchResults(results, searchURL, pageNum, filters);
         dispatch(action);
         dispatch(toggleLoading());
-        history.push(`/results/${searchURL}`);
+        history.push(`/results/${searchURL}/${pageURL}`);
     };
 };
 

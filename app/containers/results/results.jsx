@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
-import { SearchBar } from '../../components/index.js';
+import { SearchBar, PageNav } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
 import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters } from '../../store/index.js';
 
@@ -75,13 +75,18 @@ export class Results extends Component {
 
     componentDidMount() {
         const { history, searchURL, queryAPI } = this.props
+        //Native parsing of query strings was removed in react-router-v4, so needed to parse it manually.
+        const URLArr = history.location.search.split('/');
+        const browserSearchURL = URLArr[0];
+        const pageURL = URLArr[1];
         //if browser URL is different from redux store's searchURL, a thunk is dispatched to get the appropriate results
-        if (history.location.search !== searchURL) {
-            queryAPI(history.location.search);
+        if (browserSearchURL !== searchURL) {
+            queryAPI(browserSearchURL, pageURL);
         };
     };
 
     render() {
+        const { filteredResults, currentPage, searchURL } = this.props;
         return (
             <Container>
                 <SearchBar />
@@ -94,7 +99,7 @@ export class Results extends Component {
                         {this.generatePreviews()}
                     </Col>
                 </Row>
-                {/* <BottomNav step={this.state.step} /> */}
+                <PageNav length={filteredResults.length} step={this.state.step} currentPage={currentPage} searchURL={searchURL}/>
             </Container>
         );
     };
@@ -102,8 +107,8 @@ export class Results extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        queryAPI: (queryURL) => {
-            dispatch(queryAPI(null, null, queryURL));
+        queryAPI: (queryURL, pageURL) => {
+            dispatch(queryAPI(null, null, queryURL, pageURL));
         },
         setFilter: (filterCategory, filterName, value) => {
             dispatch(setFilter(filterCategory, filterName, value));
