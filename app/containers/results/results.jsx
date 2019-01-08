@@ -3,7 +3,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
-import { BookPreview, DistinctFilter, RangeFilter, SortBy } from './index.js';
+import { BookPreview, DistinctFilter, SortBy } from './index.js';
 import { queryAPI, setFilter, applyFilters, sortResults } from '../../store/index.js';
 
 export class Results extends Component {
@@ -37,27 +37,14 @@ export class Results extends Component {
             <React.Fragment>
                 {Object.keys(filters).map(key => {
                     const val = filters[key];
-                    if (val.max) {
-                        const { min, max, selectedVal } = val;
-                        return (
-                            <RangeFilter 
-                            key={key} 
-                            name={key} 
-                            min={min} 
-                            max={max} 
-                            selectedVal={selectedVal}/>
-                        )
-                    }
-                    else {
-                        return (
-                            <DistinctFilter 
-                            key={key} 
-                            name={key} 
-                            options={val} 
-                            setFilter={this.props.setFilter} 
-                            applyFilters={this.applyFilters}/>
-                        )
-                    }
+                    return (
+                        <DistinctFilter 
+                        key={key} 
+                        name={key} 
+                        options={val} 
+                        setFilter={this.props.setFilter} 
+                        applyFilters={this.applyFilters}/>
+                    );
                 })}
             </React.Fragment>
         );
