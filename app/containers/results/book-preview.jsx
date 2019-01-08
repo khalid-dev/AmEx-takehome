@@ -10,7 +10,7 @@ class BookPreview extends Component {
         return (
             <Row onClick={() => history.push(`${history.location.pathname}/${bookIx}`)}>
                 <Col>
-                    <Image src={coverURL} thumbnail/>
+                    <Image aria-hidden="true" src={coverURL} thumbnail/>
                 </Col>
                 <Col>
                     <Row>
