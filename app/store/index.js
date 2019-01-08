@@ -11,6 +11,7 @@ const FILTER_SET = "FILTER_SET";
 const APPLIED_FILTERS = "APPLIED_FILTERS";
 const RESULTS_SORTED = "RESULTS_SORTED";
 const ALL_FILTERS_TOGGLED = "ALL_FILTERS_TOGGLED";
+const PAGE_SET = "PAGE_SET";
 
 const initialState = {
     searchURL: '',
@@ -65,6 +66,13 @@ const allFiltersToggled = (toggledFilters, filteredResults) => {
         type: ALL_FILTERS_TOGGLED,
         toggledFilters,
         filteredResults
+    };
+};
+
+const pageSet = (pageIx) => {
+    return {
+        type: PAGE_SET,
+        pageIx
     };
 };
 
@@ -134,6 +142,12 @@ export const toggleAllFilters = (results, filters, val) => {
     };
 };
 
+export const setPage = (pageIx) => {
+    return dispatch => {
+        dispatch(pageSet(pageIx));
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
@@ -154,6 +168,9 @@ const reducer = (state = initialState, action) => {
         case ALL_FILTERS_TOGGLED:
             const { toggledFilters } = action;
             return { ...state, filters: toggledFilters };
+        case PAGE_SET:
+            const { pageIx } = action;
+            return { ...state, currentPage: pageIx };
         default:
             return state;
     };

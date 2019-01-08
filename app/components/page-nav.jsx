@@ -16,7 +16,8 @@ const PageNav = ({ length, step, currentPage, searchURL, setPage }) => {
                 <NavLink 
                 key={i} 
                 to={`/results/${searchURL}/page=${i}`} 
-                activeClassName="selected">
+                activeClassName="selected"
+                onClick={() => setPage(i)}>
                     {i}
                 </NavLink>
             );

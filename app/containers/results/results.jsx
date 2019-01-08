@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar, PageNav } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
-import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters } from '../../store/index.js';
+import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters, setPage } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -86,7 +86,7 @@ export class Results extends Component {
     };
 
     render() {
-        const { filteredResults, currentPage, searchURL } = this.props;
+        const { filteredResults, currentPage, searchURL, setPage } = this.props;
         return (
             <Container>
                 <SearchBar />
@@ -99,7 +99,12 @@ export class Results extends Component {
                         {this.generatePreviews()}
                     </Col>
                 </Row>
-                <PageNav length={filteredResults.length} step={this.state.step} currentPage={currentPage} searchURL={searchURL}/>
+                <PageNav 
+                length={filteredResults.length} 
+                step={this.state.step} 
+                currentPage={currentPage} 
+                searchURL={searchURL}
+                setPage={setPage}/>
             </Container>
         );
     };
@@ -121,6 +126,9 @@ const mapDispatchToProps = dispatch => {
         },
         toggleAllFilters: (results, filters, val) => {
             dispatch(toggleAllFilters(results, filters, val));
+        },
+        setPage: (pageIx) => {
+            dispatch(setPage(pageIx));
         }
     };
 };
