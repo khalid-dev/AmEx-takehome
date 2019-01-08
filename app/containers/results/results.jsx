@@ -99,6 +99,7 @@ export class Results extends Component {
                         {this.generatePreviews()}
                     </Col>
                 </Row>
+                {`You are currently on page: ${currentPage}`}
                 <PageNav 
                 length={filteredResults.length} 
                 step={this.state.step} 
