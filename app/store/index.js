@@ -87,12 +87,12 @@ export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
         let response;
         let searchURL;
         if (queryURL) {
-            response = await axios.get(`http://openlibrary.org/search.json${queryURL}&limit=1000`);
+            response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=1000`);
             searchURL = queryURL;
         }
         else {
             const formattedQueryBody = queryBody.split(' ').join('+');
-            response = await axios.get(`http://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
+            response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
             searchURL = `?${queryPrefix}=${formattedQueryBody}`;
         }
         const results = response.data.docs;
