@@ -28,7 +28,7 @@ export class SearchBar extends Component {
 
     handleSubmit() {
         const { queryPrefix, queryBody } = this.state;
-        this.props.queryAPI(searchPrefixes[queryPrefix], queryBody);
+        this.props.queryAPI(searchPrefixes[queryPrefix], queryBody, 'page=1');
     };
 
     render() {
@@ -63,8 +63,8 @@ export class SearchBar extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        queryAPI: (queryPrefix, queryBody) => {
-            dispatch(queryAPI(queryPrefix, queryBody));
+        queryAPI: (queryPrefix, queryBody, pageURL) => {
+            dispatch(queryAPI(queryPrefix, queryBody, null, pageURL));
         }
     };
 };
