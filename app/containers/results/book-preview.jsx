@@ -14,13 +14,13 @@ class BookPreview extends Component {
                 </Col>
                 <Col>
                     <Row>
-                        Title: {title}
+                        {`Title: ${title}`}
                     </Row>
                     <Row>
-                        Author: {author_name || 'No author specified'}
+                        {`Author: ${author_name || 'No author specified'}`}
                     </Row>
                     <Row>
-                        First Published In: {first_publish_year || 'No publish date specified'}
+                        {`First Published In: ${first_publish_year || 'No publish date specified'}`}
                     </Row>
                 </Col>
             </Row>
