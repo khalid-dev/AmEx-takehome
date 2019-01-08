@@ -3,13 +3,14 @@ import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger'
 import axios from 'axios';
 import history from '../history.js';
-import { generateFilters, setSingleFilter, applyAllFilters, sort } from './utils.js';
+import { generateFilters, setSingleFilter, applyAllFilters, sort, toggleFilters } from './utils.js';
 
 const GOT_RESULTS = "GOT_RESULTS";
 const TOGGLE_LOADING = "TOGGLE_LOADING";
 const FILTER_SET = "FILTER_SET";
 const APPLIED_FILTERS = "APPLIED_FILTERS";
 const RESULTS_SORTED = "RESULTS_SORTED";
+const ALL_FILTERS_TOGGLED = "ALL_FILTERS_TOGGLED";
 
 const initialState = {
     searchURL: '',
@@ -59,6 +60,14 @@ const resultsSorted = (sortedResults) => {
     };
 };
 
+const allFiltersToggled = (toggledFilters, filteredResults) => {
+    return {
+        type: ALL_FILTERS_TOGGLED,
+        toggledFilters,
+        filteredResults
+    };
+};
+
 /**
  * PARAMS: queryPrefix, queryBody, queryURL (optional)
  * Returns a thunk that sends a GET request to Open Library's search.json API.
@@ -78,11 +87,11 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
             response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
             searchURL = `?${queryPrefix}=${formattedQueryBody}`;
         }
-        dispatch(toggleLoading());
         const results = response.data.docs;
         const filters = generateFilters(results);
         const action = gotSearchResults(results, searchURL, 1, filters);
         dispatch(action);
+        dispatch(toggleLoading());
         history.push(`/results/${searchURL}`);
     };
 };
@@ -113,6 +122,17 @@ export const sortResults = (results, sortBy) => {
     };
 };
 
+export const toggleAllFilters = (results, filters, val) => {
+    return dispatch => {
+        dispatch(toggleLoading());
+        const toggledFilters = toggleFilters(filters, val);
+        const filteredResults = applyAllFilters(results, toggledFilters);
+        dispatch(allFiltersToggled(toggledFilters, filteredResults));
+        dispatch(appliedFilters(filteredResults));
+        dispatch(toggleLoading());
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
@@ -130,6 +150,9 @@ const reducer = (state = initialState, action) => {
         case RESULTS_SORTED:
             const { sortedResults } = action;
             return { ...state, filteredResults: sortedResults };
+        case ALL_FILTERS_TOGGLED:
+            const { toggledFilters } = action;
+            return { ...state, filters: toggledFilters };
         default:
             return state;
     };

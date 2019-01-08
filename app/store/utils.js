@@ -1,39 +1,17 @@
 import allowedFilters from './allowed-filters.js';
 
 //Fills a single filter of filters appropriately with specified value
-const filterFiller = (filters, key, val) => {
-    if (!isNaN(val)) {
-        const numericalVal = Number(val);
-        const filter = filters[key];
-        if (filter) {
-            if (val < filter.min) {
-                filter.min = numericalVal;
-                filter.selectedVal = numericalVal;
-            };
-            if (val > filter.max) {
-                filter.max = numericalVal;
-            };
-        }
-        else {
-            filters[key] = {
-                min: numericalVal,
-                max: numericalVal,
-                selectedVal: numericalVal
-            };
-        };
+export const filterFiller = (filters, key, val) => {
+    if (filters[key]) {
+        filters[key][val] = false;
     }
     else {
-        if (filters[key]) {
-            filters[key][val] = false;
-        }
-        else {
-            filters[key] = { [val]: false}
-        };
+        filters[key] = { [val]: false}
     };
 };
 
 //Generates a single filter to be filled
-const generateFilter = (filters, key, val) => {
+export const generateFilter = (filters, key, val) => {
     if (allowedFilters[key]) {
         //if val is an array
         if (val.length) {
@@ -62,13 +40,7 @@ export const generateFilters = (results) => {
 //Sets a single filter in filters with the specified value
 export const setSingleFilter = (filters, filterCategory, filterName, value) => {
     const category = filters[filterCategory];
-    //if category is a range
-    if (category.max) {
-
-    }
-    else {
-        category[filterName] = value;
-    };
+    category[filterName] = value;
     return filters;
 };
 
@@ -80,19 +52,13 @@ export const applyAllFilters = (results, filters) => {
         Object.keys(filters).forEach(filterName => {
             if (result[filterName]) {
                 const filter = filters[filterName];
-                //if filter is a range
-                if (filter.max) {
-
-                }
-                else {
-                    //result.filterName is always an array at this point due to generateFilters
-                        result[filterName].forEach(entry => {
-                            if (filter[entry] === true) {
-                                resultPassesFilter = true;
-                            };
-                        });
-                    }
-                };
+                //result.filterName is always an array at this point due to generateFilters
+                result[filterName].forEach(entry => {
+                    if (filter[entry] === true) {
+                        resultPassesFilter = true;
+                    };
+                });
+            };
         });
         return resultPassesFilter;
     });
@@ -163,4 +129,15 @@ export const sort = (results, sortBy) => {
         };
     });
     return sortedResults;
+};
+
+export const toggleFilters = (filters, val) => {
+    const newFilters = {};
+    Object.keys(filters).forEach(filter => {
+        newFilters[filter] = {};
+        Object.keys(filters[filter]).forEach(subFilter => {
+            newFilters[filter][subFilter] = val;
+        });
+    });
+    return newFilters;
 };

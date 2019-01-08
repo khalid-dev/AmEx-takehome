@@ -3,8 +3,8 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
-import { BookPreview, DistinctFilter, RangeFilter, SortBy } from './index.js';
-import { queryAPI, setFilter, applyFilters, sortResults } from '../../store/index.js';
+import { BookPreview, DistinctFilter, SortBy } from './index.js';
+import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -19,6 +19,7 @@ export class Results extends Component {
         this.applyFilters = this.applyFilters.bind(this);
         //Same as above for SortBy component
         this.sortResults = this.sortResults.bind(this);
+        this.toggleAllFilters = this.toggleAllFilters.bind(this);
     };
 
     applyFilters() {
@@ -31,33 +32,26 @@ export class Results extends Component {
         sortResults(filteredResults, sortBy);
     };
 
+    toggleAllFilters(val) {
+        const { results, filters, toggleAllFilters } = this.props;
+        toggleAllFilters(results, filters, val);
+    }
+
     renderFilters() {
         const { filters } = this.props;
         return (
             <React.Fragment>
                 {Object.keys(filters).map(key => {
                     const val = filters[key];
-                    if (val.max) {
-                        const { min, max, selectedVal } = val;
-                        return (
-                            <RangeFilter 
-                            key={key} 
-                            name={key} 
-                            min={min} 
-                            max={max} 
-                            selectedVal={selectedVal}/>
-                        )
-                    }
-                    else {
-                        return (
-                            <DistinctFilter 
-                            key={key} 
-                            name={key} 
-                            options={val} 
-                            setFilter={this.props.setFilter} 
-                            applyFilters={this.applyFilters}/>
-                        )
-                    }
+                    return (
+                        <DistinctFilter 
+                        key={key} 
+                        name={key} 
+                        options={val} 
+                        setFilter={this.props.setFilter} 
+                        applyFilters={this.applyFilters}
+                        toggleAllFilters={this.toggleAllFilters}/>
+                    );
                 })}
             </React.Fragment>
         );
@@ -119,6 +113,9 @@ const mapDispatchToProps = dispatch => {
         },
         sortResults: (results, sortBy) => {
             dispatch(sortResults(results, sortBy));
+        },
+        toggleAllFilters: (results, filters, val) => {
+            dispatch(toggleAllFilters(results, filters, val));
         }
     };
 };
