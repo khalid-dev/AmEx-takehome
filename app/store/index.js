@@ -11,6 +11,7 @@ const FILTER_SET = "FILTER_SET";
 const APPLIED_FILTERS = "APPLIED_FILTERS";
 const RESULTS_SORTED = "RESULTS_SORTED";
 const ALL_FILTERS_TOGGLED = "ALL_FILTERS_TOGGLED";
+const PAGE_SET = "PAGE_SET";
 
 const initialState = {
     searchURL: '',
@@ -68,12 +69,19 @@ const allFiltersToggled = (toggledFilters, filteredResults) => {
     };
 };
 
+const pageSet = (pageIx) => {
+    return {
+        type: PAGE_SET,
+        pageIx
+    };
+};
+
 /**
  * PARAMS: queryPrefix, queryBody, queryURL (optional)
  * Returns a thunk that sends a GET request to Open Library's search.json API.
  * Apppropriately toggles loading while request is open and sets other state fields appropriately.
  */
-export const queryAPI = (queryPrefix, queryBody, queryURL) => {
+export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
     return async dispatch => {
         dispatch(toggleLoading());
         let response;
@@ -89,10 +97,11 @@ export const queryAPI = (queryPrefix, queryBody, queryURL) => {
         }
         const results = response.data.docs;
         const filters = generateFilters(results);
-        const action = gotSearchResults(results, searchURL, 1, filters);
+        const pageNum = pageURL.charAt(pageURL.length - 1);
+        const action = gotSearchResults(results, searchURL, pageNum, filters);
         dispatch(action);
         dispatch(toggleLoading());
-        history.push(`/results/${searchURL}`);
+        history.push(`/results/${searchURL}/${pageURL}`);
     };
 };
 
@@ -133,6 +142,12 @@ export const toggleAllFilters = (results, filters, val) => {
     };
 };
 
+export const setPage = (pageIx) => {
+    return dispatch => {
+        dispatch(pageSet(pageIx));
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
@@ -153,6 +168,9 @@ const reducer = (state = initialState, action) => {
         case ALL_FILTERS_TOGGLED:
             const { toggledFilters } = action;
             return { ...state, filters: toggledFilters };
+        case PAGE_SET:
+            const { pageIx } = action;
+            return { ...state, currentPage: pageIx };
         default:
             return state;
     };
