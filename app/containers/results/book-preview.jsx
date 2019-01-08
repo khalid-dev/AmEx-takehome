@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Image } from 'react-bootstrap';
+import { Row, Col, Image, Card } from 'react-bootstrap';
 import { withRouter } from "react-router";
 
 class BookPreview extends Component {
@@ -8,7 +8,7 @@ class BookPreview extends Component {
         const { cover_i, title, author_name, first_publish_year } = bookInfo;
         const coverURL = cover_i ? `https://covers.openlibrary.org/b/id/${cover_i}-M.jpg` : `https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg`;
         return (
-            <Row onClick={() => history.push(`${history.location.pathname}/${bookIx}`)}>
+            <Row onClick={() => history.push(`${history.location.pathname}book=${bookIx}`)}>
                 <Col>
                     <Image aria-hidden="true" src={coverURL} thumbnail/>
                 </Col>

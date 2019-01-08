@@ -90,15 +90,15 @@ export class Results extends Component {
         return (
             <Container>
                 <SearchBar />
-                <Row>
-                    <Col>
+                <Col>
+                    <Row>
                         {this.renderFilters()}
-                    </Col>
-                    <Col>
                         <SortBy sortResults={this.sortResults}/>
+                    </Row>
+                    <Row>
                         {this.generatePreviews()}
-                    </Col>
-                </Row>
+                    </Row>
+                </Col>
                 {`You are currently on page: ${currentPage}`}
                 <PageNav 
                 length={filteredResults.length} 
