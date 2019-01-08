@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
-import { queryAPI, setFilter, applyFilters, sortResults } from '../../store/index.js';
+import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -19,6 +19,7 @@ export class Results extends Component {
         this.applyFilters = this.applyFilters.bind(this);
         //Same as above for SortBy component
         this.sortResults = this.sortResults.bind(this);
+        this.toggleAllFilters = this.toggleAllFilters.bind(this);
     };
 
     applyFilters() {
@@ -30,6 +31,11 @@ export class Results extends Component {
         const { filteredResults, sortResults } = this.props;
         sortResults(filteredResults, sortBy);
     };
+
+    toggleAllFilters(val) {
+        const { results, filters, toggleAllFilters } = this.props;
+        toggleAllFilters(results, filters, val);
+    }
 
     renderFilters() {
         const { filters } = this.props;
@@ -43,7 +49,8 @@ export class Results extends Component {
                         name={key} 
                         options={val} 
                         setFilter={this.props.setFilter} 
-                        applyFilters={this.applyFilters}/>
+                        applyFilters={this.applyFilters}
+                        toggleAllFilters={this.toggleAllFilters}/>
                     );
                 })}
             </React.Fragment>
@@ -106,6 +113,9 @@ const mapDispatchToProps = dispatch => {
         },
         sortResults: (results, sortBy) => {
             dispatch(sortResults(results, sortBy));
+        },
+        toggleAllFilters: (results, filters, val) => {
+            dispatch(toggleAllFilters(results, filters, val));
         }
     };
 };

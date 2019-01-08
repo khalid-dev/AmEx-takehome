@@ -130,3 +130,14 @@ export const sort = (results, sortBy) => {
     });
     return sortedResults;
 };
+
+export const toggleFilters = (filters, val) => {
+    const newFilters = {};
+    Object.keys(filters).forEach(filter => {
+        newFilters[filter] = {};
+        Object.keys(filters[filter]).forEach(subFilter => {
+            newFilters[filter][subFilter] = val;
+        });
+    });
+    return newFilters;
+};
