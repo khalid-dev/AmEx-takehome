@@ -1,7 +1,7 @@
 import allowedFilters from './allowed-filters.js';
 
 //Fills a single filter of filters appropriately with specified value
-const filterFiller = (filters, key, val) => {
+export const filterFiller = (filters, key, val) => {
     if (!isNaN(val)) {
         const numericalVal = Number(val);
         const filter = filters[key];
@@ -33,7 +33,7 @@ const filterFiller = (filters, key, val) => {
 };
 
 //Generates a single filter to be filled
-const generateFilter = (filters, key, val) => {
+export const generateFilter = (filters, key, val) => {
     if (allowedFilters[key]) {
         //if val is an array
         if (val.length) {
