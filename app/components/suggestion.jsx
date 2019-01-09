@@ -7,15 +7,15 @@ export class Suggestion extends Component {
     render() {
         const { queryName, queryPrefix, queryBody } = this.props;
         return (
-            <Button onClick={() => this.props.queryAPI(queryPrefix, queryBody)}>{queryName}</Button>
+            <Button onClick={() => this.props.queryAPI(queryPrefix, queryBody, 'page=1')}>{queryName}</Button>
         );
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        queryAPI: (queryPrefix, queryBody) => {
-            dispatch(queryAPI(queryPrefix, queryBody));
+        queryAPI: (queryPrefix, queryBody, pageURL) => {
+            dispatch(queryAPI(queryPrefix, queryBody, null, pageURL));
         }
     };
 };
