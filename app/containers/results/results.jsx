@@ -103,7 +103,7 @@ export class Results extends Component {
                         </Row>
                     </Col>
                     <Row className="justify-content-md-center">
-                        {`You are currently on page: ${currentPage} \n`}
+                        {`You are currently on page: ${currentPage}`}
                         <PageNav 
                         length={filteredResults.length} 
                         step={this.state.step} 

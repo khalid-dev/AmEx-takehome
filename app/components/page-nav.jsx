@@ -51,7 +51,7 @@ const PageNav = ({ length, step, currentPage, searchURL, setPage }) => {
     };
     
     return (
-        <Row>
+        <Row className="justify-content-md-center pageNav">
             {generateLinks()}
         </Row>
     );
