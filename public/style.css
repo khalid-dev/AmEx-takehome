@@ -1,3 +1,9 @@
 .customDropdown {
-    padding: .2em
+    padding-right: .5em;
+    padding-left: .5em;
+    padding-bottom: 1em;
+}
+
+.searchBar {
+    padding: 1em;
 }

@@ -33,7 +33,7 @@ export class SearchBar extends Component {
 
     render() {
         return (
-            <Row>
+            <Row className="searchBar">
                 <InputGroup>
                     <DropdownButton 
                         as={InputGroup.Prepend}

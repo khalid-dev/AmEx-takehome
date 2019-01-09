@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, CardColumns } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar, PageNav } from '../../components/index.js';
@@ -10,7 +10,7 @@ export class Results extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: 10,
+            step: 9,
             sortBy: ''
         };
         /**
@@ -67,9 +67,9 @@ export class Results extends Component {
             .slice(startIx, endIx)
             .map((book, ix)=> <BookPreview key={ix} bookInfo={book} bookIx={startIx + ix}/>)
         return (
-            <React.Fragment>
+            <CardColumns>
                 {bookPreviews}
-            </React.Fragment>
+            </CardColumns>
         )
     };
 

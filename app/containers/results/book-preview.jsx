@@ -8,22 +8,19 @@ class BookPreview extends Component {
         const { cover_i, title, author_name, first_publish_year } = bookInfo;
         const coverURL = cover_i ? `https://covers.openlibrary.org/b/id/${cover_i}-M.jpg` : `https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg`;
         return (
-            <Row onClick={() => history.push(`${history.location.pathname}book=${bookIx}`)}>
-                <Col>
-                    <Image aria-hidden="true" src={coverURL} thumbnail/>
-                </Col>
-                <Col>
-                    <Row>
-                        {`Title: ${title}`}
-                    </Row>
-                    <Row>
-                        {`Author: ${author_name || 'No author specified'}`}
-                    </Row>
-                    <Row>
-                        {`First Published In: ${first_publish_year || 'No publish date specified'}`}
-                    </Row>
-                </Col>
-            </Row>
+            <Card
+            border="dark"
+            onClick={() => history.push(`${history.location.pathname}book=${bookIx}`)}>
+                <Card.Body>
+                    <Card.Img variant="top" src={coverURL}/>
+                    <Card.Title>Title</Card.Title>
+                    <Card.Text>{title}</Card.Text>
+                    <Card.Title>Author</Card.Title>
+                    <Card.Text>{author_name || 'No author specified'}</Card.Text>
+                    <Card.Title>First Published</Card.Title>
+                    <Card.Text>{first_publish_year || 'No publish date specified'}</Card.Text>
+                </Card.Body>
+            </Card>
         );
     };
 };
