@@ -11,13 +11,13 @@ class BookPreview extends Component {
             <Card
             border="dark"
             onClick={() => history.push(`${history.location.pathname}book=${bookIx}`)}>
-                <Card.Body>
-                    <Card.Img variant="top" src={coverURL}/>
-                    <Card.Title>Title</Card.Title>
+                <Card.Body className="text-center">
+                    <Card.Img aria-hidden="true" variant="top" src={coverURL}/>
+                    <Card.Title>Title:</Card.Title>
                     <Card.Text>{title}</Card.Text>
-                    <Card.Title>Author</Card.Title>
+                    <Card.Title>Author:</Card.Title>
                     <Card.Text>{author_name || 'No author specified'}</Card.Text>
-                    <Card.Title>First Published</Card.Title>
+                    <Card.Title>First Published:</Card.Title>
                     <Card.Text>{first_publish_year || 'No publish date specified'}</Card.Text>
                 </Card.Body>
             </Card>
