@@ -5,7 +5,8 @@ const DistinctFilter = ({ name, options, setFilter, applyFilters, toggleAllFilte
     const optionsCopy = Object.keys(options).slice();
     optionsCopy.sort();
     return (
-        <DropdownButton title={name}>
+        //style={{padding: '.2em'}}
+        <DropdownButton title={name} className="customDropdown">
             <Dropdown.Item active={false} onClick={() => toggleAllFilters(true)}>Select All</Dropdown.Item>
             <Dropdown.Item active={false} onClick={() => toggleAllFilters(false)}>Unselect All</Dropdown.Item>
             {optionsCopy.map(key => {

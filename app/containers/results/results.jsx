@@ -91,7 +91,7 @@ export class Results extends Component {
             <Container>
                 <SearchBar />
                 <Col>
-                    <Row>
+                    <Row className="justify-content-md-center">
                         {this.renderFilters()}
                         <SortBy sortResults={this.sortResults}/>
                     </Row>
@@ -99,13 +99,15 @@ export class Results extends Component {
                         {this.generatePreviews()}
                     </Row>
                 </Col>
-                {`You are currently on page: ${currentPage}`}
-                <PageNav 
-                length={filteredResults.length} 
-                step={this.state.step} 
-                currentPage={currentPage} 
-                searchURL={searchURL}
-                setPage={setPage}/>
+                <Row className="justify-content-md-center">
+                    {`You are currently on page: ${currentPage} \n`}
+                    <PageNav 
+                    length={filteredResults.length} 
+                    step={this.state.step} 
+                    currentPage={currentPage} 
+                    searchURL={searchURL}
+                    setPage={setPage}/>
+                </Row>
             </Container>
         );
     };
