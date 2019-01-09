@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Container, Image, Card, Alert } from 'react-bootstrap';
+import { Col, Row, Image, Card, Alert } from 'react-bootstrap';
 
 const BookInfo = ({ book }) => {
     if (!book) {
