@@ -4,6 +4,7 @@ import { Container, Card } from 'react-bootstrap';
 import BookInfo from './book-info.jsx';
 import { SearchBar } from '../../components/index.js';
 import { Link } from 'react-router-dom';
+// TODO ERROR HANDLING IF SEARCH RESULT RETURSN NO RESULTS AND ERROR HANDLING FOR 500? CAN BE DONE SAME WAY?
 
 class Book extends Component {
     render() {
@@ -13,7 +14,6 @@ class Book extends Component {
             <Container>
                 <SearchBar />
                 <Card>
-                    {/* <Card.Header className="text-center">{`${book.title}, ${book.author_name}`}</Card.Header> */}
                     <Card.Header className="text-center">
                         <Link
                         to={`/results/${searchURL}/page=${currentPage}`}>

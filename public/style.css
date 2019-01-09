@@ -3,9 +3,7 @@ a {
 }
 
 .customDropdown {
-    padding-right: .5em;
-    padding-left: .5em;
-    padding-bottom: 1em;
+    padding: 0em .5em 1em .5em;
 }
 
 .searchBar {
@@ -14,4 +12,56 @@ a {
 
 .pageNav {
     width: 100%;
+}
+
+.dropdown-menu.show {
+    height: 25em;
+    overflow-y: scroll;
+}
+
+.customImage {
+    width: 100%;
+    padding: 1.5em;
+}
+
+.loaderContainer {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.loader {
+    height: 100px;
+    width: 100px;
+    animation: loader-rotate 1s linear infinite
+  }
+  
+.circleLoader {
+    animation: loader-circle-rotate 2s linear infinite
+}
+  
+@keyframes loader-rotate {
+    0% {
+        stroke-dasharray: 280px;
+        transform: rotate(0);
+    }
+    100% {
+        stroke-dasharray: 100px;
+        transform: rotate(1turn)
+    }
+}
+  
+@keyframes loader-circle-rotate {
+    0% {
+        stroke: blue;
+        stroke-dasharray: 280px;
+    }
+    50% {
+        stroke: green;
+        stroke-dasharray: 210px;
+    }
+    100% {
+        stroke: blue;
+        stroke-dasharray: 280px;
+    }
 }

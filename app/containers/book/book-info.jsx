@@ -17,7 +17,7 @@ const BookInfo = ({ book }) => {
     return (
         <Row>
             <Col lg={6}>
-                <Image aria-hidden="true" className="align-left" src={coverURL} />
+                <Image aria-hidden="true" className="align-left customImage" src={coverURL} />
             </Col>
             <Col lg={6}>
                 <Card.Title>Title:</Card.Title>
