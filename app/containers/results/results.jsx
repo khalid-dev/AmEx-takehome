@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Col, Row, CardColumns } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
-import { SearchBar, PageNav } from '../../components/index.js';
+import { SearchBar, PageNav, Loading } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
 import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters, setPage } from '../../store/index.js';
 
@@ -86,28 +86,32 @@ export class Results extends Component {
     };
 
     render() {
-        const { filteredResults, currentPage, searchURL, setPage } = this.props;
+        const { filteredResults, currentPage, searchURL, setPage, isLoading } = this.props;
         return (
             <Container>
                 <SearchBar />
-                <Col>
+                {isLoading ? 
+                <Loading /> :
+                <React.Fragment>
+                    <Col>
+                        <Row className="justify-content-md-center">
+                            {this.renderFilters()}
+                            <SortBy sortResults={this.sortResults}/>
+                        </Row>
+                        <Row>
+                            {this.generatePreviews()}
+                        </Row>
+                    </Col>
                     <Row className="justify-content-md-center">
-                        {this.renderFilters()}
-                        <SortBy sortResults={this.sortResults}/>
+                        {`You are currently on page: ${currentPage} \n`}
+                        <PageNav 
+                        length={filteredResults.length} 
+                        step={this.state.step} 
+                        currentPage={currentPage} 
+                        searchURL={searchURL}
+                        setPage={setPage}/>
                     </Row>
-                    <Row>
-                        {this.generatePreviews()}
-                    </Row>
-                </Col>
-                <Row className="justify-content-md-center">
-                    {`You are currently on page: ${currentPage} \n`}
-                    <PageNav 
-                    length={filteredResults.length} 
-                    step={this.state.step} 
-                    currentPage={currentPage} 
-                    searchURL={searchURL}
-                    setPage={setPage}/>
-                </Row>
+                </React.Fragment>}
             </Container>
         );
     };
@@ -143,6 +147,7 @@ const mapStateToProps = state => {
         filters: state.filters,
         currentPage: state.currentPage,
         searchURL: state.searchURL,
+        isLoading: state.isLoading
     };
 };
 
