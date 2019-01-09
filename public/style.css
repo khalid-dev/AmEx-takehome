@@ -3,9 +3,7 @@ a {
 }
 
 .customDropdown {
-    padding-right: .5em;
-    padding-left: .5em;
-    padding-bottom: 1em;
+    padding: 0em, .5em, 1em, .5em;
 }
 
 .searchBar {
@@ -14,4 +12,14 @@ a {
 
 .pageNav {
     width: 100%;
+}
+
+.dropdown-menu.show {
+    height: 25em;
+    overflow-y: scroll;
+}
+
+.customImage {
+    width: 100%;
+    padding: 1.5em;
 }
