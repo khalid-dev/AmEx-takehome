@@ -12,7 +12,7 @@ export default class SortBy extends Component {
     render() {
         const { sortedBy } = this.state;
         return (
-            <DropdownButton title={`Sort by: ${sortedBy}`}>
+            <DropdownButton title={`Sort by: ${sortedBy}`} className="customDropdown">
                 {Object.keys(sortOptions).map(key => {
                     return (
                         <Dropdown.Item 

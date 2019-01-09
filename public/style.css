@@ -1,34 +1,9 @@
-* {
-    box-sizing: border-box;
-    font-family: arial, sans-serif;
+.customDropdown {
+    padding-right: .5em;
+    padding-left: .5em;
+    padding-bottom: 1em;
 }
 
-body {
-    background: linear-gradient(#ffffff, #c0c0c0);
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-h1 {
-    font-family: 'Orbitron', sans-serif;
-}
-
-#app {
-    border: 3px black solid;
-    padding: 5px;
-    font-family: 'Orbitron', sans-serif;
-    text-align: center;
-    max-width: 350px;
-}
-
-main {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.searchBar {
+    padding: 1em;
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, CardColumns } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
-import { SearchBar, PageNav } from '../../components/index.js';
+import { SearchBar, PageNav, Loading } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
 import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters, setPage } from '../../store/index.js';
 
@@ -10,7 +10,7 @@ export class Results extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: 10,
+            step: 9,
             sortBy: ''
         };
         /**
@@ -67,9 +67,9 @@ export class Results extends Component {
             .slice(startIx, endIx)
             .map((book, ix)=> <BookPreview key={ix} bookInfo={book} bookIx={startIx + ix}/>)
         return (
-            <React.Fragment>
+            <CardColumns>
                 {bookPreviews}
-            </React.Fragment>
+            </CardColumns>
         )
     };
 
@@ -86,26 +86,32 @@ export class Results extends Component {
     };
 
     render() {
-        const { filteredResults, currentPage, searchURL, setPage } = this.props;
+        const { filteredResults, currentPage, searchURL, setPage, isLoading } = this.props;
         return (
             <Container>
                 <SearchBar />
-                <Row>
+                {isLoading ? 
+                <Loading /> :
+                <React.Fragment>
                     <Col>
-                        {this.renderFilters()}
+                        <Row className="justify-content-md-center">
+                            {this.renderFilters()}
+                            <SortBy sortResults={this.sortResults}/>
+                        </Row>
+                        <Row>
+                            {this.generatePreviews()}
+                        </Row>
                     </Col>
-                    <Col>
-                        <SortBy sortResults={this.sortResults}/>
-                        {this.generatePreviews()}
-                    </Col>
-                </Row>
-                {`You are currently on page: ${currentPage}`}
-                <PageNav 
-                length={filteredResults.length} 
-                step={this.state.step} 
-                currentPage={currentPage} 
-                searchURL={searchURL}
-                setPage={setPage}/>
+                    <Row className="justify-content-md-center">
+                        {`You are currently on page: ${currentPage} \n`}
+                        <PageNav 
+                        length={filteredResults.length} 
+                        step={this.state.step} 
+                        currentPage={currentPage} 
+                        searchURL={searchURL}
+                        setPage={setPage}/>
+                    </Row>
+                </React.Fragment>}
             </Container>
         );
     };
@@ -141,6 +147,7 @@ const mapStateToProps = state => {
         filters: state.filters,
         currentPage: state.currentPage,
         searchURL: state.searchURL,
+        isLoading: state.isLoading
     };
 };
 
