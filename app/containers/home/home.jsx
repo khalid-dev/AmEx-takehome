@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container } from 'react-bootstrap';
-import { SearchBar, Suggestion } from '../../components/index.js';
+import { SearchBar, Suggestion, Loading } from '../../components/index.js';
 import suggestedSearches from '../../components/constants/suggested-searches.js';
 
-export default class Home extends Component {
+export class Home extends Component {
     constructor(props) {
         super(props);
     };
@@ -11,7 +12,9 @@ export default class Home extends Component {
         return (
             <Container>
                 <SearchBar />
-                {Object.keys(suggestedSearches).map(key => {
+                {this.props.isLoading ? 
+                <Loading /> : 
+                Object.keys(suggestedSearches).map(key => {
                     const [ queryPrefix, queryBody ] = suggestedSearches[key];
                     return (
                         <Suggestion 
@@ -25,3 +28,12 @@ export default class Home extends Component {
         )
     };
 };
+
+const mapStateToProps = state => {
+    return {
+        isLoading: state.isLoading
+    };
+};
+
+const ConnectedHome = connect(mapStateToProps, null)(Home);
+export default ConnectedHome;
