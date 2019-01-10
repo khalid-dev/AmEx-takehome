@@ -1,6 +1,8 @@
 # AmEx-takehome
 * Web Application that allows users to search for and view books using Open Library's API.
 * [Deployed Link](book-finder-a42054.netlify.com)
+* ```npm run start:dev```
+* ```npm run test:client```
 ## Design Decisions
 * Paginate Response from API (vs. Infinite Scrolling)
     * Infinite scrolling is less accessible; if results are paginated, sr-users have a better idea of where they are.
