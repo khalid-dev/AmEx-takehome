@@ -2,7 +2,7 @@ import React from 'react';
 import { Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const PageNav = ({ length, step, currentPage, searchURL, setPage }) => {
+const PageNav = ({ length, step, currentPage, searchURL, setPage, getMoreResults }) => {
 
     const generateLinks = () => {
         let startPage = 1;
@@ -46,6 +46,22 @@ const PageNav = ({ length, step, currentPage, searchURL, setPage }) => {
                 {`Next >>`}
                 </Link>
             );
+        }
+        //Get More Results Link
+        //Double equal for string number comparison
+        if (currentPage == totalPages) {
+            const nextPageIx = Number(currentPage) + 1;
+            links.push(
+                <Link
+                key="moreResults"
+                to={`/results/${searchURL}/page=${nextPageIx}`} 
+                onClick={() => {
+                    getMoreResults();
+                    setPage(nextPageIx);
+                }}>
+                {`More Results >>`}
+                </Link>
+            )
         }
         return links;
     };

@@ -3,10 +3,10 @@ import allowedFilters from './allowed-filters.js';
 //Fills a single filter of filters appropriately with specified value
 export const filterFiller = (filters, key, val) => {
     if (filters[key]) {
-        filters[key][val] = false;
+        filters[key][val] = true;
     }
     else {
-        filters[key] = { [val]: false}
+        filters[key] = { [val]: true}
     };
 };
 

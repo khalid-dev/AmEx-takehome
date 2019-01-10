@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import { SearchBar, PageNav, Loading } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
-import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters, setPage } from '../../store/index.js';
+import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters, setPage, getMoreResults } from '../../store/index.js';
 
 export class Results extends Component {
     constructor(props) {
@@ -20,6 +20,7 @@ export class Results extends Component {
         //Same as above for SortBy component
         this.sortResults = this.sortResults.bind(this);
         this.toggleAllFilters = this.toggleAllFilters.bind(this);
+        this.getMoreResults = this.getMoreResults.bind(this);
     };
 
     applyFilters() {
@@ -35,7 +36,12 @@ export class Results extends Component {
     toggleAllFilters(val) {
         const { results, filters, toggleAllFilters } = this.props;
         toggleAllFilters(results, filters, val);
-    }
+    };
+
+    getMoreResults() {
+        const { searchURL, searchURLPage, results, getMoreResults } = this.props;
+        getMoreResults(searchURL, searchURLPage, results);
+    };
 
     renderFilters() {
         const { filters } = this.props;
@@ -65,7 +71,9 @@ export class Results extends Component {
         //Generates BookPreview components for the current page the user is viewing
         const bookPreviews = filteredResults
             .slice(startIx, endIx)
-            .map((book, ix)=> <BookPreview key={ix} bookInfo={book} bookIx={startIx + ix}/>)
+            .map((book, ix)=> {
+                return <BookPreview key={ix} bookInfo={book} bookIx={startIx + ix}/>
+            });
         return (
             <CardColumns>
                 {bookPreviews}
@@ -109,7 +117,8 @@ export class Results extends Component {
                         step={this.state.step} 
                         currentPage={currentPage} 
                         searchURL={searchURL}
-                        setPage={setPage}/>
+                        setPage={setPage}
+                        getMoreResults={this.getMoreResults}/>
                     </Row>
                 </React.Fragment>}
             </Container>
@@ -136,6 +145,9 @@ const mapDispatchToProps = dispatch => {
         },
         setPage: (pageIx) => {
             dispatch(setPage(pageIx));
+        },
+        getMoreResults: (queryURL, searchURLPage, currentResults) => {
+            dispatch(getMoreResults(queryURL, searchURLPage, currentResults));
         }
     };
 };
@@ -147,7 +159,8 @@ const mapStateToProps = state => {
         filters: state.filters,
         currentPage: state.currentPage,
         searchURL: state.searchURL,
-        isLoading: state.isLoading
+        isLoading: state.isLoading,
+        searchURLPage: state.searchURLPage
     };
 };
 
