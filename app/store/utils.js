@@ -2,10 +2,10 @@ import allowedFilters from './allowed-filters.js';
 
 /**
  * @param {*} filters 
- * @param {*} key 
- * @param {*} val 
+ * @param {*} key Filter Category
+ * @param {*} val Sub Filter
  * @effects 
- *      Fills a single key of filters with specified value.
+ *      Sets a single key's val of filters to true.
  */
 export const filterFiller = (filters, key, val) => {
     if (filters[key]) {
@@ -25,8 +25,7 @@ export const filterFiller = (filters, key, val) => {
  */
 export const generateFilter = (filters, key, val) => {
     if (allowedFilters[key]) {
-        //if val is an array
-        if (val.length) {
+        if (Array.isArray(val)) {
             val.forEach(val => {
                 filterFiller(filters, key, val);
             });
