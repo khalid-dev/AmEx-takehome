@@ -1,17 +1,8 @@
 import React from 'react';
-import { Col, Row, Image, Card, Alert } from 'react-bootstrap';
+import { Col, Row, Image, Card } from 'react-bootstrap';
+
 
 const BookInfo = ({ book }) => {
-    if (!book) {
-        return (
-            <Alert variant="danger">
-                <Alert.Heading>There's no books to look at! :(</Alert.Heading>
-                <p>
-                    Sorry for the inconvenience! Please perform a fresh search.
-                </p>
-            </Alert>
-        );
-    };
     const { cover_i, title, author_name, first_publish_year, ebook_count_i, language, subject } = book;
     const coverURL = cover_i ? `https://covers.openlibrary.org/b/id/${cover_i}-L.jpg` : `https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg`;
     return (

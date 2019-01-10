@@ -12,6 +12,7 @@ const APPLIED_FILTERS = "APPLIED_FILTERS";
 const RESULTS_SORTED = "RESULTS_SORTED";
 const ALL_FILTERS_TOGGLED = "ALL_FILTERS_TOGGLED";
 const PAGE_SET = "PAGE_SET";
+const GOT_MORE_RESULTS = "GOT_MORE_RESULTS";
 
 const initialState = {
     searchURL: '',
@@ -19,7 +20,9 @@ const initialState = {
     filters: {},
     filteredResults: [],
     isLoading: false,
-    currentPage: 0
+    currentPage: 0,
+    numResults: 0,
+    searchURLPage: 0
 };
 
 const toggleLoading = () => {
@@ -28,13 +31,15 @@ const toggleLoading = () => {
     }
 ;}
 
-const gotSearchResults = (results, searchURL, currentPage, filters) => {
+const gotSearchResults = (results, searchURL, currentPage, filters, numResults, searchURLPage) => {
     return {
         type: GOT_RESULTS,
         results,
         searchURL,
         currentPage,
-        filters
+        filters,
+        numResults,
+        searchURLPage
     };
 };
 
@@ -76,35 +81,64 @@ const pageSet = (pageIx) => {
     };
 };
 
+const gotMoreResults = (moreResults, newFilteredResults, newFilters, newSearchURLPage) => {
+    return {
+        type: GOT_MORE_RESULTS,
+        moreResults,
+        newFilteredResults,
+        newFilters,
+        newSearchURLPage
+    };
+};
+
 /**
- * PARAMS: queryPrefix, queryBody, queryURL (optional)
- * Returns a thunk that sends a GET request to Open Library's search.json API.
- * Apppropriately toggles loading while request is open and sets other state fields appropriately.
+ * @param {*} queryPrefix 
+ * @param {*} queryBody 
+ * @param {*} queryURL (optional)
+ * @param {*} pageURL 
+ * @return {dispatch}
+ * A thunk that sends a GET request to Open Library's search.json API.
+ * Dispatches actions that set state fields appropriately.
  */
 export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
     return async dispatch => {
         dispatch(toggleLoading());
         let response;
         let searchURL;
-        if (queryURL) {
-            response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=1000`);
-            searchURL = queryURL;
+        try {
+            if (queryURL) {
+                searchURL = queryURL;
+                response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90`);
+            }
+            else {
+                const formattedQueryBody = queryBody.split(' ').join('+');
+                searchURL = `?${queryPrefix}=${formattedQueryBody}`;
+                response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=90`);
+            }
+            const numResults = response.data.numFound;
+            const results = response.data.docs;
+            const filters = generateFilters(results);
+            const pageNum = pageURL.charAt(pageURL.length - 1);
+            const action = gotSearchResults(results, searchURL, pageNum, filters, numResults, 1);
+            dispatch(action);
+            history.push(`/results/${searchURL}/${pageURL}`);
         }
-        else {
-            const formattedQueryBody = queryBody.split(' ').join('+');
-            response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=1000`);
-            searchURL = `?${queryPrefix}=${formattedQueryBody}`;
-        }
-        const results = response.data.docs;
-        const filters = generateFilters(results);
-        const pageNum = pageURL.charAt(pageURL.length - 1);
-        const action = gotSearchResults(results, searchURL, pageNum, filters);
-        dispatch(action);
+        catch (err) {
+            const results = [];
+            dispatch(gotSearchResults(results));
+            history.push(`/results`);
+        };
         dispatch(toggleLoading());
-        history.push(`/results/${searchURL}/${pageURL}`);
     };
 };
 
+/** 
+ * @param {*} filterCategory 
+ * @param {*} filterName 
+ * @param {*} value 
+ * @return {dispatch}
+ * A dispatch that dispatches an action to set a single filter, then applies all selected filters.
+ */
 export const setFilter = (filterCategory, filterName, value) => {
     return dispatch => {
         dispatch(filterSet(filterCategory, filterName, value));
@@ -148,11 +182,32 @@ export const setPage = (pageIx) => {
     };
 };
 
+/**
+ * @param {*} queryURL 
+ * @param {*} searchURLPage 
+ * @param {*} currentResults 
+ * @returns {dispatch}
+ * A thunk that sends a GET request to Open Library's search.json API for the next page of query results.
+ * Dispatches actions that set state fields appropriately.
+ */
+export const getMoreResults = (queryURL, searchURLPage, currentResults) => {
+    return async dispatch => {
+        dispatch(toggleLoading());
+        const nextSearchURLPage = searchURLPage + 1;
+        const response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90&page=${nextSearchURLPage}`)
+        const moreResults = currentResults.concat(response.data.docs);
+        const newFilters = generateFilters(moreResults);
+        const newFilteredResults = applyAllFilters(moreResults, newFilters)
+        dispatch(gotMoreResults(moreResults, newFilteredResults, newFilters, nextSearchURLPage));
+        dispatch(toggleLoading());
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GOT_RESULTS:
-            const { results, searchURL, currentPage, filters } = action;
-            return { ...state, results , filteredResults: results, searchURL, currentPage, filters};
+            const { results, searchURL, currentPage, filters, numResults, searchURLPage } = action;
+            return { ...state, results , filteredResults: results, searchURL, currentPage, filters, numResults, searchURLPage};
         case TOGGLE_LOADING:
             return { ...state, isLoading: !state.isLoading};
         case FILTER_SET:
@@ -171,6 +226,9 @@ const reducer = (state = initialState, action) => {
         case PAGE_SET:
             const { pageIx } = action;
             return { ...state, currentPage: pageIx };
+        case GOT_MORE_RESULTS:
+            const { moreResults, newFilteredResults, newSearchURLPage } = action;
+            return { ...state, results: moreResults, filteredResults: newFilteredResults, filters: action.newFilters, searchURLPage: newSearchURLPage };
         default:
             return state;
     };
