@@ -19,7 +19,9 @@ export class Results extends Component {
         this.applyFilters = this.applyFilters.bind(this);
         //Same as above for SortBy component
         this.sortResults = this.sortResults.bind(this);
+        //Same as above for DistinctFilter component
         this.toggleAllFilters = this.toggleAllFilters.bind(this);
+        //Same as above for Bottom-Nav component
         this.getMoreResults = this.getMoreResults.bind(this);
     };
 

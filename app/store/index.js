@@ -92,9 +92,13 @@ const gotMoreResults = (moreResults, newFilteredResults, newFilters, newSearchUR
 };
 
 /**
- * PARAMS: queryPrefix, queryBody, queryURL (optional)
- * Returns a thunk that sends a GET request to Open Library's search.json API.
- * Apppropriately toggles loading while request is open and sets other state fields appropriately.
+ * @param {*} queryPrefix 
+ * @param {*} queryBody 
+ * @param {*} queryURL (optional)
+ * @param {*} pageURL 
+ * @return {dispatch}
+ * A thunk that sends a GET request to Open Library's search.json API.
+ * Dispatches actions that set state fields appropriately.
  */
 export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
     return async dispatch => {
@@ -128,6 +132,13 @@ export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
     };
 };
 
+/** 
+ * @param {*} filterCategory 
+ * @param {*} filterName 
+ * @param {*} value 
+ * @return {dispatch}
+ * A dispatch that dispatches an action to set a single filter, then applies all selected filters.
+ */
 export const setFilter = (filterCategory, filterName, value) => {
     return dispatch => {
         dispatch(filterSet(filterCategory, filterName, value));
@@ -171,6 +182,14 @@ export const setPage = (pageIx) => {
     };
 };
 
+/**
+ * @param {*} queryURL 
+ * @param {*} searchURLPage 
+ * @param {*} currentResults 
+ * @returns {dispatch}
+ * A thunk that sends a GET request to Open Library's search.json API for the next page of query results.
+ * Dispatches actions that set state fields appropriately.
+ */
 export const getMoreResults = (queryURL, searchURLPage, currentResults) => {
     return async dispatch => {
         dispatch(toggleLoading());
