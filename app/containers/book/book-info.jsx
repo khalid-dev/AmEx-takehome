@@ -20,8 +20,8 @@ const BookInfo = ({ book }) => {
                 }}/>
             </Col>
             <Col lg={6}>
-                <Card.Title>Title:</Card.Title>
-                <Card.Text>{title}</Card.Text>
+                <Card.Title role="alert">Title:</Card.Title>
+                <Card.Text role="alert">{title}</Card.Text>
                 <Card.Title>Author:</Card.Title>
                 <Card.Text>{author_name || 'No author specified'}</Card.Text>
                 <Card.Title>First Published In:</Card.Title>

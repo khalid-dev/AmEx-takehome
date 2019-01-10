@@ -110,6 +110,7 @@ export class Results extends Component {
                                 {this.renderFilters()}
                                 <SortBy sortResults={this.sortResults}/>
                             </Row>
+                            <h1 role="alert" className="text-center">Results:</h1>
                             <Row>
                                 {this.generatePreviews()}
                             </Row>
