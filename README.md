@@ -9,7 +9,7 @@ Web Application that allows users to search for and view books using Open Librar
     * Filters are dynamically generated based upon results in the redux store, enabling filtering by every property on every book returned.
     * Enables multi-select filters that canot be done with API end points (filtering by 3 authors, 2 languages, etc.).
     * Sufficiently performant, even when performed on thousands of elements.
-* Query Limit of 900 Books per API request (vs. Higher Limit OR vs. Lazy Loading Small Sections)
+* Query Limit of 900 Books per API request (vs. Higher Limit vs. Lazy Loading Small Sections)
     * 900 is enough to remain performant, while sufficiently populating results and filters.
     * User can load more results when they reach the end of their current results; new query results are combined with current results.
     * There is a case where a user's search would return thousands of results, and they would want to filter it down by author or language. In this case, filters would only apply to the results currently in state, rather than the thousands of results. However, this case seems unlikely to me.
