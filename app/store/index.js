@@ -109,12 +109,12 @@ export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
         try {
             if (queryURL) {
                 searchURL = queryURL;
-                response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90`);
+                response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=900`);
             }
             else {
                 const formattedQueryBody = queryBody.split(' ').join('+');
                 searchURL = `?${queryPrefix}=${formattedQueryBody}`;
-                response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=90`);
+                response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=900`);
             }
             const numResults = response.data.numFound;
             const results = response.data.docs;
@@ -197,7 +197,7 @@ export const getMoreResults = (queryURL, searchURLPage, currentResults) => {
     return async dispatch => {
         dispatch(toggleLoading());
         const nextSearchURLPage = searchURLPage + 1;
-        const response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90&page=${nextSearchURLPage}`)
+        const response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=900&page=${nextSearchURLPage}`)
         const moreResults = currentResults.concat(response.data.docs);
         const newFilters = generateFilters(moreResults);
         const newFilteredResults = applyAllFilters(moreResults, newFilters)
