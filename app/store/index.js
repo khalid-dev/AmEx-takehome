@@ -92,13 +92,14 @@ const gotMoreResults = (moreResults, newFilteredResults, newFilters, newSearchUR
 };
 
 /**
+ * @description
+ *      Returns a thunk that sends a GET request to Open Library's search.json API.
+ *      Dispatches actions that set state fields appropriately.
  * @param {*} queryPrefix 
  * @param {*} queryBody 
  * @param {*} queryURL (optional)
  * @param {*} pageURL 
  * @return {dispatch}
- * A thunk that sends a GET request to Open Library's search.json API.
- * Dispatches actions that set state fields appropriately.
  */
 export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
     return async dispatch => {
@@ -108,12 +109,12 @@ export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
         try {
             if (queryURL) {
                 searchURL = queryURL;
-                response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90`);
+                response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=900`);
             }
             else {
                 const formattedQueryBody = queryBody.split(' ').join('+');
                 searchURL = `?${queryPrefix}=${formattedQueryBody}`;
-                response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=90`);
+                response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=900`);
             }
             const numResults = response.data.numFound;
             const results = response.data.docs;
@@ -133,11 +134,12 @@ export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
 };
 
 /** 
+ * @description
+ *      Returns a dispatch that dispatches an action to set a single filter, applies all selected filters, then dispatches an action to set the new filteredResults.
  * @param {*} filterCategory 
  * @param {*} filterName 
  * @param {*} value 
  * @return {dispatch}
- * A dispatch that dispatches an action to set a single filter, then applies all selected filters.
  */
 export const setFilter = (filterCategory, filterName, value) => {
     return dispatch => {
@@ -183,18 +185,19 @@ export const setPage = (pageIx) => {
 };
 
 /**
+ * @description
+ *      Returns a thunk that sends a GET request to Open Library's search.json API for the next page of query results.
+ *      Dispatches actions that set state fields appropriately.
  * @param {*} queryURL 
  * @param {*} searchURLPage 
  * @param {*} currentResults 
  * @returns {dispatch}
- * A thunk that sends a GET request to Open Library's search.json API for the next page of query results.
- * Dispatches actions that set state fields appropriately.
  */
 export const getMoreResults = (queryURL, searchURLPage, currentResults) => {
     return async dispatch => {
         dispatch(toggleLoading());
         const nextSearchURLPage = searchURLPage + 1;
-        const response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90&page=${nextSearchURLPage}`)
+        const response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=900&page=${nextSearchURLPage}`)
         const moreResults = currentResults.concat(response.data.docs);
         const newFilters = generateFilters(moreResults);
         const newFilteredResults = applyAllFilters(moreResults, newFilters)

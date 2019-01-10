@@ -1,6 +1,12 @@
 import allowedFilters from './allowed-filters.js';
 
-//Fills a single filter of filters appropriately with specified value
+/**
+ * @param {*} filters 
+ * @param {*} key Filter Category
+ * @param {*} val Sub Filter
+ * @effects 
+ *      Sets a single key's val of filters to true.
+ */
 export const filterFiller = (filters, key, val) => {
     if (filters[key]) {
         filters[key][val] = true;
@@ -10,11 +16,16 @@ export const filterFiller = (filters, key, val) => {
     };
 };
 
-//Generates a single filter to be filled
+/**
+ * @param {*} filters 
+ * @param {*} key 
+ * @param {*} val 
+ * @effects
+ *      Generates a single filter to be filled.
+ */
 export const generateFilter = (filters, key, val) => {
     if (allowedFilters[key]) {
-        //if val is an array
-        if (val.length) {
+        if (Array.isArray(val)) {
             val.forEach(val => {
                 filterFiller(filters, key, val);
             });
@@ -25,7 +36,12 @@ export const generateFilter = (filters, key, val) => {
     };
 };
 
-//Generates all filters for the specified array of results
+/**
+ * @description
+ *      Generates a filters obj for the specified array of results.
+ * @param {*} results 
+ * @returns {object} filters
+ */
 export const generateFilters = (results) => {
     const filters = {};
     results.forEach(result => {
@@ -37,21 +53,36 @@ export const generateFilters = (results) => {
     return filters;
 };
 
-//Sets a single filter in filters with the specified value
+/**
+ * 
+ * @param {*} filters 
+ * @param {*} filterCategory 
+ * @param {*} filterName 
+ * @param {*} value 
+ * @returns {obj} filters
+ * @effects
+ *      Sets a single filter in filters with the specified value.
+ */
 export const setSingleFilter = (filters, filterCategory, filterName, value) => {
     const category = filters[filterCategory];
     category[filterName] = value;
     return filters;
 };
 
-//Applies all specified filters to specified results
+/**
+ * @description
+ *      Creates a new filteredResults object by applying all specified filters to specified results.
+ * @param {*} results 
+ * @param {*} filters 
+ * @returns {object} filteredResults
+ */
 export const applyAllFilters = (results, filters) => {
-    return results.filter(result => {
+    const filteredResults = results.filter(result => {
         let resultPassesFilter = false;
         Object.keys(filters).forEach(filterName => {
             if (result[filterName]) {
                 const filter = filters[filterName];
-                //result.filterName is always an array at this point due to generateFilters
+                //result.filterName is always an array at this point due to generateFilters()
                 result[filterName].forEach(entry => {
                     if (filter[entry] === true) {
                         resultPassesFilter = true;
@@ -61,6 +92,7 @@ export const applyAllFilters = (results, filters) => {
         });
         return resultPassesFilter;
     });
+    return filteredResults;
 };
 
 const authorComparator = (bookA, bookB) => {
@@ -96,9 +128,14 @@ const publishDateComparator = (bookA, bookB) => {
         return 0;
 };
 
-//Sorts all specified results by one of three comparators
+/**
+ * @description
+ *          Creates a new sortedResults object by sorting results by one of three comparators.
+ * @param {*} results 
+ * @param {*} sortBy
+ * @return {object} sortedResults
+ */
 export const sort = (results, sortBy) => {
-    console.log(sortBy);
     const resultsCopy = results.slice();
     const sortedResults = resultsCopy.sort((bookA, bookB) => {
         const [ attribute, order ] = sortBy;
@@ -131,14 +168,20 @@ export const sort = (results, sortBy) => {
     return sortedResults;
 };
 
-//Toggles all specified filters' values to the specified value
+/**
+ * @description
+ *      Creates a toggledFilters object by setting all of filters' values to val.
+ * @param {*} filters 
+ * @param {*} val 
+ * @returns {object} toggledFilters
+ */
 export const toggleFilters = (filters, val) => {
-    const newFilters = {};
+    const toggledFilters = {};
     Object.keys(filters).forEach(filter => {
-        newFilters[filter] = {};
+        toggledFilters[filter] = {};
         Object.keys(filters[filter]).forEach(subFilter => {
-            newFilters[filter][subFilter] = val;
+            toggledFilters[filter][subFilter] = val;
         });
     });
-    return newFilters;
+    return toggledFilters;
 };

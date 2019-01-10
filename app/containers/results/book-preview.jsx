@@ -12,7 +12,14 @@ class BookPreview extends Component {
             border="dark"
             onClick={() => history.push(`${history.location.pathname}book=${bookIx}`)}>
                 <Card.Body className="text-center">
-                    <Card.Img aria-hidden="true" variant="top" src={coverURL}/>
+                    <Card.Img 
+                    aria-hidden="true" 
+                    variant="top" 
+                    src={coverURL}
+                    onError= {(evt) => {
+                        evt.target.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg';
+                        evt.target.onError = null;
+                    }}/>
                     <Card.Title>Title:</Card.Title>
                     <Card.Text>{title}</Card.Text>
                     <Card.Title>Author:</Card.Title>
