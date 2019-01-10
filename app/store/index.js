@@ -101,23 +101,30 @@ export const queryAPI = (queryPrefix, queryBody, queryURL, pageURL) => {
         dispatch(toggleLoading());
         let response;
         let searchURL;
-        if (queryURL) {
-            response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90`);
-            searchURL = queryURL;
+        try {
+            if (queryURL) {
+                searchURL = queryURL;
+                response = await axios.get(`https://openlibrary.org/search.json${queryURL}&limit=90`);
+            }
+            else {
+                const formattedQueryBody = queryBody.split(' ').join('+');
+                searchURL = `?${queryPrefix}=${formattedQueryBody}`;
+                response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=90`);
+            }
+            const numResults = response.data.numFound;
+            const results = response.data.docs;
+            const filters = generateFilters(results);
+            const pageNum = pageURL.charAt(pageURL.length - 1);
+            const action = gotSearchResults(results, searchURL, pageNum, filters, numResults, 1);
+            dispatch(action);
+            history.push(`/results/${searchURL}/${pageURL}`);
         }
-        else {
-            const formattedQueryBody = queryBody.split(' ').join('+');
-            response = await axios.get(`https://openlibrary.org/search.json?${queryPrefix}=${formattedQueryBody}&limit=90`);
-            searchURL = `?${queryPrefix}=${formattedQueryBody}`;
-        }
-        const numResults = response.data.numFound;
-        const results = response.data.docs;
-        const filters = generateFilters(results);
-        const pageNum = pageURL.charAt(pageURL.length - 1);
-        const action = gotSearchResults(results, searchURL, pageNum, filters, numResults, 1);
-        dispatch(action);
+        catch (err) {
+            const results = [];
+            dispatch(gotSearchResults(results));
+            history.push(`/results`);
+        };
         dispatch(toggleLoading());
-        history.push(`/results/${searchURL}/${pageURL}`);
     };
 };
 
