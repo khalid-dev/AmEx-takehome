@@ -6,10 +6,7 @@ const DistinctFilter = ({ name, options, setFilter, applyFilters, toggleAllFilte
     const optionsCopy = Object.keys(options).slice();
     optionsCopy.sort();
     const filterName = name.split('_').map(word => (word.charAt(0).toUpperCase() + word.slice(1))).join(' ');
-    let langName;
-    if (filterName === 'Language') {
-        
-    };
+
     return (
         <DropdownButton title={filterName} className="customDropdown">
             <Dropdown.Item active={false} onClick={() => toggleAllFilters(true)}>Select All</Dropdown.Item>
