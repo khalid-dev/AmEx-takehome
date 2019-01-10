@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'react-bootstrap';
-import { SearchBar, Suggestion, Loading } from '../../components/index.js';
-import suggestedSearches from '../../components/constants/suggested-searches.js';
+import { SearchBar, Loading } from '../../components/index.js';
 
 export class Home extends Component {
     constructor(props) {
@@ -14,16 +13,7 @@ export class Home extends Component {
                 <SearchBar />
                 {this.props.isLoading ? 
                 <Loading /> : 
-                Object.keys(suggestedSearches).map(key => {
-                    const [ queryPrefix, queryBody ] = suggestedSearches[key];
-                    return (
-                        <Suggestion 
-                            key={key} 
-                            queryName={key} 
-                            queryPrefix={queryPrefix}
-                            queryBody={queryBody}/>
-                    )
-                })}
+                <React.Fragment/>}
             </Container>
         )
     };
