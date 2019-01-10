@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Col, Row, CardColumns } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
-import { SearchBar, PageNav, Loading } from '../../components/index.js';
+import { SearchBar, PageNav, Loading, NoBooksFound } from '../../components/index.js';
 import { BookPreview, DistinctFilter, SortBy } from './index.js';
 import { queryAPI, setFilter, applyFilters, sortResults, toggleAllFilters, setPage, getMoreResults } from '../../store/index.js';
 
@@ -101,25 +101,30 @@ export class Results extends Component {
                 {isLoading ? 
                 <Loading /> :
                 <React.Fragment>
-                    <Col>
+                    {filteredResults.length ? 
+                    <React.Fragment>
+                        <Col>
+                            <Row className="justify-content-md-center">
+                                {this.renderFilters()}
+                                <SortBy sortResults={this.sortResults}/>
+                            </Row>
+                            <Row>
+                                {this.generatePreviews()}
+                            </Row>
+                        </Col>
                         <Row className="justify-content-md-center">
-                            {this.renderFilters()}
-                            <SortBy sortResults={this.sortResults}/>
-                        </Row>
-                        <Row>
-                            {this.generatePreviews()}
-                        </Row>
-                    </Col>
-                    <Row className="justify-content-md-center">
-                        {`You are currently on page: ${currentPage}`}
-                        <PageNav 
-                        length={filteredResults.length} 
-                        step={this.state.step} 
-                        currentPage={currentPage} 
-                        searchURL={searchURL}
-                        setPage={setPage}
-                        getMoreResults={this.getMoreResults}/>
-                    </Row>
+                            {`You are currently on page: ${currentPage}`}
+                            <PageNav 
+                            length={filteredResults.length} 
+                            step={this.state.step} 
+                            currentPage={currentPage} 
+                            searchURL={searchURL}
+                            setPage={setPage}
+                            getMoreResults={this.getMoreResults}/>
+                        </Row> 
+                    </React.Fragment>: 
+                    <NoBooksFound />
+                    }
                 </React.Fragment>}
             </Container>
         );
