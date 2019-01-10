@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Image, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { withRouter } from "react-router";
 
 class BookPreview extends Component {

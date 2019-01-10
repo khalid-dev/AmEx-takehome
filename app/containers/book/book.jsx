@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Card } from 'react-bootstrap';
 import BookInfo from './book-info.jsx';
-import { SearchBar } from '../../components/index.js';
+import { SearchBar, NoBooksFound } from '../../components/index.js';
 import { Link } from 'react-router-dom';
-// TODO ERROR HANDLING IF SEARCH RESULT RETURSN NO RESULTS AND ERROR HANDLING FOR 500? CAN BE DONE SAME WAY?
 
 class Book extends Component {
     render() {
@@ -13,6 +12,7 @@ class Book extends Component {
         return (
             <Container>
                 <SearchBar />
+                {book ? 
                 <Card>
                     <Card.Header className="text-center">
                         <Link
@@ -21,7 +21,8 @@ class Book extends Component {
                         </Link>
                     </Card.Header>
                     <BookInfo book={book}/>
-                </Card>
+                </Card> : 
+                <NoBooksFound />}
             </Container>
         );
     };
