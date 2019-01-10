@@ -15,7 +15,7 @@ a {
 }
 
 .dropdown-menu.show {
-    height: 25em;
+    max-height: 25em;
     overflow-y: scroll;
 }
 
