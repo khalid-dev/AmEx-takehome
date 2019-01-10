@@ -240,8 +240,7 @@ const reducer = (state = initialState, action) => {
 const store = createStore(
     reducer, 
     applyMiddleware(
-        thunkMiddleware.withExtraArgument({axios}),
-        loggingMiddleware
+        thunkMiddleware.withExtraArgument({axios})
     )
 );
   
