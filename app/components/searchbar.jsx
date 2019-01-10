@@ -32,6 +32,7 @@ export class SearchBar extends Component {
     };
 
     render() {
+        const { isLoading } = this.props;
         return (
             <Row className="searchBar">
                 <InputGroup>
@@ -53,7 +54,7 @@ export class SearchBar extends Component {
                     </DropdownButton>
                     <Form.Control aria-label="query-text-input" placeholder="Enter search terms..." name="queryBody" onChange={this.handleBodyChange}></Form.Control>
                     <InputGroup.Append>
-                        <Button variant="secondary" onClick={this.handleSubmit}>Search</Button>
+                        <Button variant="secondary" onClick={this.handleSubmit} disabled={isLoading}>Search</Button>
                     </InputGroup.Append>
                 </InputGroup>
             </Row>
@@ -69,6 +70,12 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const ConnectedSearchBar = connect(null, mapDispatchToProps)(SearchBar);
+const mapStateToProps = state => {
+    return {
+        isLoading: state.isLoading
+    };
+};
+
+const ConnectedSearchBar = connect(mapStateToProps, mapDispatchToProps)(SearchBar);
 
 export default ConnectedSearchBar;
