@@ -8,7 +8,14 @@ const BookInfo = ({ book }) => {
     return (
         <Row>
             <Col lg={6}>
-                <Image aria-hidden="true" className="align-left customImage" src={coverURL} />
+                <Image 
+                aria-hidden="true" 
+                className="align-left customImage" 
+                src={coverURL} 
+                onError= {(evt) => {
+                    evt.target.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg';
+                    evt.target.onError = null;
+                }}/>
             </Col>
             <Col lg={6}>
                 <Card.Title>Title:</Card.Title>
