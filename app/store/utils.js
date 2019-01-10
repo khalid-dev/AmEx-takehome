@@ -45,7 +45,6 @@ export const setSingleFilter = (filters, filterCategory, filterName, value) => {
 };
 
 //Applies all specified filters to specified results
-//TODO: refactor so it's easier to unit test
 export const applyAllFilters = (results, filters) => {
     return results.filter(result => {
         let resultPassesFilter = false;
@@ -97,6 +96,7 @@ const publishDateComparator = (bookA, bookB) => {
         return 0;
 };
 
+//Sorts all specified results by one of three comparators
 export const sort = (results, sortBy) => {
     console.log(sortBy);
     const resultsCopy = results.slice();
@@ -131,6 +131,7 @@ export const sort = (results, sortBy) => {
     return sortedResults;
 };
 
+//Toggles all specified filters' values to the specified value
 export const toggleFilters = (filters, val) => {
     const newFilters = {};
     Object.keys(filters).forEach(filter => {
