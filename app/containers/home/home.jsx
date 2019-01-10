@@ -10,6 +10,7 @@ export class Home extends Component {
     render() {
         return (
             <Container>
+                <h1 className="text-center"> Search For a Book! </h1>
                 <SearchBar />
                 {this.props.isLoading ? 
                 <Loading /> : 
