@@ -96,14 +96,14 @@ export class Results extends Component {
     };
 
     render() {
-        const { filteredResults, currentPage, searchURL, setPage, isLoading } = this.props;
+        const { filteredResults, currentPage, searchURL, setPage, isLoading, results } = this.props;
         return (
             <Container>
                 <SearchBar />
                 {isLoading ? 
                 <Loading /> :
                 <React.Fragment>
-                    {filteredResults.length ? 
+                    {results.length ? 
                     <React.Fragment>
                         <Col>
                             <Row className="justify-content-md-center">
