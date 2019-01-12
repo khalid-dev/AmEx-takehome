@@ -1,11 +1,15 @@
 # AmEx-takehome
-Web Application that allows users to search for and view books using Open Library's API.
+* Web Application that allows users to search for and view books using Open Library's API.
+* [Deployed Link](book-finder-a42054.netlify.com)
+* ```npm run start:dev```
+* ```npm run test:client```
 ## Design Decisions
 * Paginate Response from API (vs. Infinite Scrolling)
     * Infinite scrolling is less accessible; if results are paginated, sr-users have a better idea of where they are.
     * Pagination allows users to skip many pages at once if they know what they're looking for.
+    * Applying filters in the middle of an infinite scroll would be more expensive for the DOM to rerender.
 * Client-Side Filtering (vs. Server-Side filtering)
-    * Minimizes API queries, improving usability for users with intermittent internet connection.
+    * Minimizes request-response cycles, improving usability for users with intermittent internet connection.
     * Filters are dynamically generated based upon results in the redux store, enabling filtering by every property on every book returned.
     * Enables multi-select filters that canot be done with API end points (filtering by 3 authors, 2 languages, etc.).
     * Sufficiently performant, even when performed on thousands of elements.
