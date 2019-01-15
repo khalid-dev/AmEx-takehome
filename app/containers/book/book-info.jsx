@@ -5,7 +5,10 @@ import langs from 'langs';
 const BookInfo = ({ book }) => {
     const { cover_i, title, author_name, first_publish_year, ebook_count_i, language, subject } = book;
     const coverURL = cover_i ? `https://covers.openlibrary.org/b/id/${cover_i}-L.jpg` : `https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg`;
-    const formattedLanguages = language.map(code => langs.where("2B", code)['name']);
+    let formattedLanguages;
+    if (language) {
+      formattedLanguages = language.map(code => langs.where("2B", code)).filter(language => language).map(language => language.name);
+    };
     
     return (
         <Row>
