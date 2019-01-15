@@ -1,6 +1,6 @@
 # AmEx-takehome
 * Web Application that allows users to search for and view books using Open Library's API.
-* [Deployed Link](book-finder-a42054.netlify.com)
+* [Deployed Link](https://book-finder-a42054.netlify.com)
 * ```npm run start:dev```
 * ```npm run test:client```
 ## Design Decisions
