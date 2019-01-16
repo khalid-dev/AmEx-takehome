@@ -35,3 +35,6 @@
 * Make Filter Dropdowns typable multiselect components.
     * If a user without a keyboard knows they want to filter by author J.R.R. Tolkein, they need to hold down arrow until they       get to the J’s, rather than being able to type 'J' and jump to the appropriate portion of filter options.
 * Store parts of redux state in cache to further improve experience for users with an intermittent internet connection.
+## Bug Fixes
+* Not all language codes had ISO 639-2B mappings, causing an error in the BookInfo component. [Commit](https://github.com/khalid-dev/AmEx-takehome/commit/555946571c5cd70ab78accf490ac072868e8d92a)
+* The NoBooksFound error component was displayed in the Results component based off filteredResults length, rather than results length. [Commit](https://github.com/khalid-dev/AmEx-takehome/commit/3c7b73d45b9be6e7718ce3642f16aaa9460652f8)
